@@ -15,14 +15,13 @@ export const sidebarMenuItems = {
             icon: Gauge,
         },
         {
-            title: 'Instellingen',
+            title: 'Settings',
             url: '#',
             icon: Settings2,
             items: [
                 {
-                    title: 'Algemeen',
+                    title: 'General',
                     url: '#',
-                    permission: 'view general settings',
                 },
                 {
                     title: 'Team',
@@ -33,14 +32,13 @@ export const sidebarMenuItems = {
                     url: '#',
                 },
                 {
-                    title: 'Gebruikers',
-                    url: '#',
-                    permission: 'view users',
+                    title: 'Users',
+                    url: route('users.index'),
                 },
             ],
         },
     ],
-    bottom: [
+    secondary: [
         {
             title: 'Support',
             url: '#',

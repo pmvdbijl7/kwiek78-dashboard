@@ -39,10 +39,9 @@ export default function Login({ status, canResetPassword }) {
             )}
 
             <CardHeader>
-                <CardTitle className="text-lg">Inloggen</CardTitle>
+                <CardTitle className="text-lg">Log in</CardTitle>
                 <CardDescription>
-                    Welkom terug! Log in om toegang te krijgen tot het
-                    dashboard.
+                    Welcome back! Log in to gain access to the dashboard.
                 </CardDescription>
             </CardHeader>
 
@@ -59,7 +58,7 @@ export default function Login({ status, canResetPassword }) {
                     className="flex flex-col gap-4"
                 >
                     <div>
-                        <Label htmlFor="email">E-mailadres</Label>
+                        <Label htmlFor="email">Email address</Label>
 
                         <Input
                             id="email"
@@ -80,7 +79,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <div>
-                        <Label htmlFor="password">Wachtwoord</Label>
+                        <Label htmlFor="password">Password</Label>
 
                         <Input
                             id="password"
@@ -113,7 +112,7 @@ export default function Login({ status, canResetPassword }) {
                                 htmlFor="remember"
                                 className="mt-0.5 text-sm"
                             >
-                                Onthoud mij
+                                Remember me
                             </Label>
                         </div>
 
@@ -122,7 +121,7 @@ export default function Login({ status, canResetPassword }) {
                                 href={route('password.request')}
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                             >
-                                Wachtwoord vergeten?
+                                Forgot password?
                             </Link>
                         )}
                     </div>
@@ -139,7 +138,7 @@ export default function Login({ status, canResetPassword }) {
                     {processing ? (
                         <Loader className="animate-spin" />
                     ) : (
-                        'Inloggen'
+                        'Log in'
                     )}
                 </Button>
             </CardFooter>

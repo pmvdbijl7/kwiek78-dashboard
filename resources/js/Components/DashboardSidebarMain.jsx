@@ -17,52 +17,48 @@ import { hasPermission } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { ChevronRight } from 'lucide-react';
 
-export default function DashboardSidebarMain() {
+export default function DashboardSidebarMain({ ...props }) {
     const permissions = usePage().props.auth.permissions;
 
     return (
-        <SidebarGroup>
+        <SidebarGroup {...props}>
             <SidebarMenu>
                 {sidebarMenuItems.main.map((item, i) => {
-                    // Check the permission for the parent item
+                    // Check if the parent item itself has permission
                     const itemHasPermission = hasPermission(
                         permissions,
                         item.permission,
                     );
 
-                    return item.items
-                        ? // Render collapsible only if the parent item has permission or no permission is set
-                          (itemHasPermission || !item.permission) && (
-                              <Collapsible
-                                  key={i}
-                                  asChild
-                                  defaultOpen={item.isActive}
-                                  className="group/collapsible"
-                              >
-                                  <SidebarMenuItem>
-                                      <CollapsibleTrigger asChild>
-                                          <SidebarMenuButton
-                                              tooltip={item.title}
-                                          >
-                                              {item.icon && <item.icon />}
-                                              <span>{item.title}</span>
-                                              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                                          </SidebarMenuButton>
-                                      </CollapsibleTrigger>
-                                      <CollapsibleContent>
-                                          <SidebarMenuSub>
-                                              {item.item?.map((subItem) => {
-                                                  // Check if the subItem has a permission
-                                                  const subItemHasPermission =
-                                                      hasPermission(
-                                                          permissions,
-                                                          subItem.permission,
-                                                      );
+                    // Filter sub-items that the user has permission to see
+                    const visibleSubItems = item.items?.filter((subItem) =>
+                        hasPermission(permissions, subItem.permission),
+                    );
 
-                                                  // Render the subItem if it has permission or no permission is set
-                                                  return (
-                                                      (subItemHasPermission ||
-                                                          !subItem.permission) && (
+                    return item.items
+                        ? // Render collapsible only if the parent item has permission or at least one sub-item is visible
+                          (itemHasPermission || !item.permission) &&
+                              visibleSubItems.length > 0 && (
+                                  <Collapsible
+                                      key={i}
+                                      asChild
+                                      defaultOpen={item.isActive}
+                                      className="group/collapsible"
+                                  >
+                                      <SidebarMenuItem>
+                                          <CollapsibleTrigger asChild>
+                                              <SidebarMenuButton
+                                                  tooltip={item.title}
+                                              >
+                                                  {item.icon && <item.icon />}
+                                                  <span>{item.title}</span>
+                                                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                              </SidebarMenuButton>
+                                          </CollapsibleTrigger>
+                                          <CollapsibleContent>
+                                              <SidebarMenuSub>
+                                                  {visibleSubItems.map(
+                                                      (subItem) => (
                                                           <SidebarMenuSubItem
                                                               key={
                                                                   subItem.title
@@ -84,14 +80,13 @@ export default function DashboardSidebarMain() {
                                                                   </Link>
                                                               </SidebarMenuSubButton>
                                                           </SidebarMenuSubItem>
-                                                      )
-                                                  );
-                                              })}
-                                          </SidebarMenuSub>
-                                      </CollapsibleContent>
-                                  </SidebarMenuItem>
-                              </Collapsible>
-                          )
+                                                      ),
+                                                  )}
+                                              </SidebarMenuSub>
+                                          </CollapsibleContent>
+                                      </SidebarMenuItem>
+                                  </Collapsible>
+                              )
                         : // Render parent item if it has permission or no permission is set
                           (itemHasPermission || !item.permission) && (
                               <SidebarMenuItem key={item.title}>

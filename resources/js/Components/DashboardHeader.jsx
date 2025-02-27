@@ -8,6 +8,7 @@ import {
 } from '@/Components/ui/breadcrumb';
 import { Separator } from '@/Components/ui/separator';
 import { SidebarTrigger } from '@/Components/ui/sidebar';
+import { Fragment } from 'react';
 
 export default function DashboardHeader({ breadcrumbs }) {
     return (
@@ -25,8 +26,8 @@ export default function DashboardHeader({ breadcrumbs }) {
                 <Breadcrumb className="hidden md:block">
                     <BreadcrumbList>
                         {breadcrumbs.map((breadcrumb, i) => (
-                            <>
-                                <BreadcrumbItem key={i}>
+                            <Fragment key={i}>
+                                <BreadcrumbItem>
                                     {breadcrumb.href ? (
                                         <BreadcrumbLink href={breadcrumb.href}>
                                             {breadcrumb.label}
@@ -41,7 +42,7 @@ export default function DashboardHeader({ breadcrumbs }) {
                                 {i !== breadcrumbs.length - 1 && (
                                     <BreadcrumbSeparator />
                                 )}
-                            </>
+                            </Fragment>
                         ))}
                     </BreadcrumbList>
                 </Breadcrumb>

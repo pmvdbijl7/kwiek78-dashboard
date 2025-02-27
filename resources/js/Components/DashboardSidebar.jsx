@@ -1,12 +1,16 @@
 import DashboardLogo from '@/Components/DashboardLogo';
 import DashboardSidebarMain from '@/Components/DashboardSidebarMain';
+import DashboardSidebarSecondary from '@/Components/DashboardSidebarSecondary';
+import DashboardSidebarUser from '@/Components/DashboardSidebarUser';
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarSeparator,
 } from '@/Components/ui/sidebar';
 
 export default function DashboardSidebar() {
@@ -36,7 +40,15 @@ export default function DashboardSidebar() {
 
             <SidebarContent>
                 <DashboardSidebarMain />
+
+                <DashboardSidebarSecondary className="mt-auto" />
             </SidebarContent>
+
+            <SidebarSeparator />
+
+            <SidebarFooter>
+                <DashboardSidebarUser />
+            </SidebarFooter>
         </Sidebar>
     );
 }
