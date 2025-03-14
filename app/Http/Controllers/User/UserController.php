@@ -16,9 +16,7 @@ class UserController extends Controller
     public function index(Request $request): Response
     {
         // Retrieve all users
-        $users = User::whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'Super Admin');
-        })->get();
+        $users = User::with('roles')->get();
 
         // Return the Inertia response
         return Inertia::render('users/index', [
