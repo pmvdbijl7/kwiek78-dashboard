@@ -1,14 +1,18 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
-import Heading from '@/components/heading';
+import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
+import UsersLayout from '@/layouts/users/layout';
 import { User, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { Ellipsis } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -91,6 +95,31 @@ const columns: ColumnDef<User>[] = [
         },
         enableSorting: false,
     },
+    {
+        id: 'actions',
+        cell: ({ row }) => {
+            return (
+                <>
+                    <DropdownMenu modal={false}>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="data-[state=open]:bg-muted flex size-8 p-0">
+                                <Ellipsis className="size-4" />
+                                <span className="sr-only">Open menu</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent align="end" className="w-[160px]">
+                            <DropdownMenuItem>Edit</DropdownMenuItem>
+
+                            <DropdownMenuSeparator />
+
+                            <DropdownMenuItem className="!text-red-500">Delete</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </>
+            );
+        },
+    },
 ];
 
 export default function Dashboard() {
@@ -100,26 +129,28 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
 
-            <div className="px-4 py-6">
-                <Heading title="Users" description="Manage all users that have access to this dashboard." />
+            <UsersLayout>
+                <div className="space-y-6">
+                    <HeadingSmall title="Users" description="Manage all users that have access to this dashboard." />
 
-                <DataTable
-                    columns={columns}
-                    data={users}
-                    filters={(table) => (
-                        <>
-                            <Input
-                                placeholder="Search users..."
-                                value={table.getState().globalFilter ?? ''}
-                                onChange={(e) => table.setGlobalFilter(e.target.value)}
-                                className="h-8 w-[150px] lg:w-[250px]"
-                            />
+                    <DataTable
+                        columns={columns}
+                        data={users}
+                        filters={(table) => (
+                            <>
+                                <Input
+                                    placeholder="Search users..."
+                                    value={table.getState().globalFilter ?? ''}
+                                    onChange={(e) => table.setGlobalFilter(e.target.value)}
+                                    className="h-8 w-[150px] lg:w-[250px]"
+                                />
 
-                            <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
-                        </>
-                    )}
-                />
-            </div>
+                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
+                            </>
+                        )}
+                    />
+                </div>
+            </UsersLayout>
         </AppLayout>
     );
 }

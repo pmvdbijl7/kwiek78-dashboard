@@ -21,7 +21,7 @@ class UserController extends Controller
         })->with('roles')->get();
 
         // Return the Inertia response
-        return Inertia::render('users/index', [
+        return Inertia::render('users/users', [
             'users' => $users
         ]);
     }
