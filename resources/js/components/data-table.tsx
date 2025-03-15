@@ -42,6 +42,11 @@ export function DataTable<TData>({ columns, data, filters }: DataTableProps<TDat
         data,
         columns,
         state: { sorting, globalFilter, columnVisibility, rowSelection, columnFilters },
+        initialState: {
+            pagination: {
+                pageSize: 10,
+            },
+        },
         enableRowSelection: true,
         onGlobalFilterChange: setGlobalFilter,
         onRowSelectionChange: setRowSelection,

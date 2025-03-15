@@ -69,7 +69,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
                     <CommandInput placeholder={title} />
 
                     <CommandList>
-                        <CommandEmpty>No results found.</CommandEmpty>
+                        <CommandEmpty>No results.</CommandEmpty>
 
                         <CommandGroup>
                             {options.map((option) => {

@@ -1,6 +1,7 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
+import Heading from '@/components/heading';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -56,6 +57,11 @@ const columns: ColumnDef<User>[] = [
         enableSorting: false,
     },
     {
+        accessorKey: 'phone',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Phone number" />,
+        enableSorting: false,
+    },
+    {
         accessorFn: (row) => (row.roles as { name: string }[]).map((role) => role.name),
         id: 'roles',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Roles" />,
@@ -94,7 +100,9 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Users" />
 
-            <div className="p-6">
+            <div className="px-4 py-6">
+                <Heading title="Users" description="Manage all users that have access to this dashboard." />
+
                 <DataTable
                     columns={columns}
                     data={users}
