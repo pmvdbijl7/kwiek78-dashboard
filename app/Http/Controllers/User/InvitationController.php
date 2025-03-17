@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class InvitationController extends Controller
 {
@@ -22,9 +23,13 @@ class InvitationController extends Controller
         // Retrieve all invitations
         $invitations = Invitation::all();
 
+        // Retrieve all roles
+        $roles = Role::whereNot('name', 'Super Admin')->get();
+
         // Return the Inertia response
         return Inertia::render('users/invitations', [
-            'invitations' => $invitations
+            'invitations' => $invitations,
+            'roles' => $roles,
         ]);
     }
 
