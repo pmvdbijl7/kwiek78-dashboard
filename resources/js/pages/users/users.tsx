@@ -1,7 +1,6 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
-import HeadingSmall from '@/components/heading-small';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -131,8 +130,6 @@ export default function Dashboard() {
 
             <UsersLayout>
                 <div className="space-y-6">
-                    <HeadingSmall title="Users" description="Manage all users that have access to this dashboard." />
-
                     <DataTable
                         columns={columns}
                         data={users}

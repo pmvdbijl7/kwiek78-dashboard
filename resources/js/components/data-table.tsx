@@ -29,9 +29,10 @@ interface DataTableProps<TData> {
     columns: ColumnDef<TData>[];
     data: TData[];
     filters?: (table: TanstackTable<TData>) => React.ReactNode;
+    actions?: React.ReactNode;
 }
 
-export function DataTable<TData>({ columns, data, filters }: DataTableProps<TData>) {
+export function DataTable<TData>({ columns, data, filters, actions }: DataTableProps<TData>) {
     const [globalFilter, setGlobalFilter] = useState('');
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -63,7 +64,7 @@ export function DataTable<TData>({ columns, data, filters }: DataTableProps<TDat
 
     return (
         <div className="space-y-4">
-            <DataTableToolbar table={table} filters={filters} />
+            <DataTableToolbar table={table} filters={filters} actions={actions} />
 
             <div className="rounded-md border">
                 <Table>
