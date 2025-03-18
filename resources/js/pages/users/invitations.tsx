@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
+import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -11,6 +12,7 @@ import InviteDialog from '@/pages/users/partials/invite-dialog';
 import { BreadcrumbItem, Role } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
 import { Ellipsis } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -48,8 +50,25 @@ const columns: ColumnDef<Role>[] = [
         enableHiding: false,
     },
     {
+        accessorKey: 'firstname',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="First name" />,
+        meta: {
+            title: 'First name',
+        },
+    },
+    {
+        accessorKey: 'lastname',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+        meta: {
+            title: 'Last name',
+        },
+    },
+    {
         accessorKey: 'email',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Email address" />,
+        meta: {
+            title: 'Email address',
+        },
         enableSorting: false,
     },
     {
@@ -85,6 +104,16 @@ const columns: ColumnDef<Role>[] = [
     {
         accessorKey: 'created_at',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
+        cell: ({ cell }) => (
+            <>
+                {format(new Date(cell.getValue() as string), 'd MMMM, yyyy')}
+                <span> at </span>
+                {format(new Date(cell.getValue() as string), 'HH:mm')}
+            </>
+        ),
+        meta: {
+            title: 'Sent at',
+        },
     },
     {
         id: 'actions',
@@ -135,8 +164,10 @@ export default function Dashboard() {
                                     placeholder="Search invitations..."
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(e) => table.setGlobalFilter(e.target.value)}
-                                    className="h-8 w-[150px] lg:w-[250px]"
+                                    className="h-8 w-full lg:w-[250px]"
                                 />
+
+                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
                             </>
                         )}
                         actions={

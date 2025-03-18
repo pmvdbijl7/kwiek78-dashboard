@@ -41,13 +41,16 @@ class InvitationController extends Controller
         // Generate a random token for the invitation
         $token = Str::random(40);
 
+        // Retrieve the roles with IDs and names
+        $roles = Role::whereIn('id', $request->roles)->get(['id', 'name']);
+
         // Create a new invitation
         $invitation = Invitation::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
             'token' => $token,
-            'roles' => $request->roles,
+            'roles' => $roles,
         ]);
 
         // Send invitation email

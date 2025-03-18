@@ -13,7 +13,7 @@ export function DataTableToolbar<TData>({ table, filters, actions }: DataTableTo
     const isFiltered = table.getState().columnFilters.length > 0;
 
     return (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col-reverse justify-between gap-2 sm:flex-row sm:items-center">
             <div className="flex flex-1 flex-col items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
                 {filters ? filters(table) : null}
 

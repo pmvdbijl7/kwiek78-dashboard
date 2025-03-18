@@ -50,19 +50,31 @@ const columns: ColumnDef<User>[] = [
             if (!filterValues || filterValues.length === 0) return true;
             return filterValues.includes(row.getValue(columnId));
         },
+        meta: {
+            title: 'First name',
+        },
     },
     {
         accessorKey: 'lastname',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+        meta: {
+            title: 'Last name',
+        },
     },
     {
         accessorKey: 'email',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Email address" />,
+        meta: {
+            title: 'Email address',
+        },
         enableSorting: false,
     },
     {
         accessorKey: 'phone',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Phone number" />,
+        meta: {
+            title: 'Phone number',
+        },
         enableSorting: false,
     },
     {
@@ -144,7 +156,7 @@ export default function Dashboard() {
                                     placeholder="Search users..."
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(e) => table.setGlobalFilter(e.target.value)}
-                                    className="h-8 w-[150px] lg:w-[250px]"
+                                    className="h-8 w-full lg:w-[250px]"
                                 />
 
                                 <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
