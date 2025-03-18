@@ -12,6 +12,7 @@ import { User, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
+import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -123,6 +124,10 @@ const columns: ColumnDef<User>[] = [
 
 export default function Dashboard() {
     const { users } = usePage().props as unknown as { users: User[] };
+
+    useEffect(() => {
+        console.log(users);
+    }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

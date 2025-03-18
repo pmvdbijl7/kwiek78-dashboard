@@ -15,7 +15,7 @@ type InviteForm = {
 };
 
 export default function InviteDialog() {
-    const { roles } = usePage().props;
+    const { roles } = usePage<{ roles: { id: string; name: string }[] }>().props;
 
     const { data, setData, post, processing, errors, reset } = useForm<Required<InviteForm>>({
         firstname: '',

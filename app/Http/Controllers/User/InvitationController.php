@@ -21,7 +21,7 @@ class InvitationController extends Controller
     public function index(Request $request): Response
     {
         // Retrieve all invitations
-        $invitations = Invitation::all();
+        $invitations = Invitation::get();
 
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')->get();
@@ -43,6 +43,8 @@ class InvitationController extends Controller
 
         // Create a new invitation
         $invitation = Invitation::create([
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
             'email' => $request->email,
             'token' => $token,
             'roles' => $request->roles,

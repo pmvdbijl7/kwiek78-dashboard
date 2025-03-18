@@ -29,7 +29,7 @@ class InvitationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'You are invited to join the' . config('app.name') . '!',
+            subject: 'You are invited to join the ' . config('app.name') . '!',
         );
     }
 
@@ -41,7 +41,7 @@ class InvitationMail extends Mailable
         return new Content(
             view: 'emails.invitation',
             with: [
-                'invitationLink' => url('/set-password/{$this->invitation->token}'),
+                'invitationLink' => url('/set-password/' . $this->invitation->token),
                 'email' => $this->invitation->email,
             ],
         );

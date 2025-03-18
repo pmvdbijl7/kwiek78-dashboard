@@ -12,7 +12,7 @@ import { BreadcrumbItem, Role } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -114,12 +114,11 @@ const columns: ColumnDef<Role>[] = [
 ];
 
 export default function Dashboard() {
-    const { invitations } = usePage().props as unknown as { invitations: Role[] };
-    const [data, setData] = useState(invitations);
+    const { invitations } = usePage().props;
 
     useEffect(() => {
-        setData(invitations);
-    }, [invitations]);
+        console.log(invitations);
+    }, []);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

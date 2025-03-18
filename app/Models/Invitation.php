@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role;
 
 class Invitation extends Model
 {
@@ -12,6 +13,8 @@ class Invitation extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'firstname',
+        'lastname',
         'email',
         'token',
         'roles',
