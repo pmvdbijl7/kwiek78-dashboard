@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
+import { toast } from 'sonner';
 
 type InviteForm = {
     firstname: string;
@@ -29,7 +30,12 @@ export default function InviteDialog() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('invitations.invite'), {
-            onSuccess: () => setOpen(false),
+            onSuccess: () => {
+                setOpen(false);
+                toast.success(`Successfully invited ${data.firstname}`, {
+                    description: `An invitation email has been sent to ${data.email}.`,
+                });
+            },
         });
     };
 
