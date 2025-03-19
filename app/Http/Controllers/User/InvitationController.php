@@ -57,6 +57,6 @@ class InvitationController extends Controller
         Mail::to($request->email)->send(new InvitationMail($invitation));
 
         // Return response
-        return response()->json(['message' => 'Invitation has been sent.']);
+        return to_route('invitations.index');
     }
 }

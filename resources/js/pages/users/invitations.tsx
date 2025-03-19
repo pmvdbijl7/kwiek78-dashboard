@@ -9,12 +9,11 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
 import InviteDialog from '@/pages/users/partials/invite-dialog';
-import { BreadcrumbItem, Role } from '@/types';
+import { BreadcrumbItem, Invitation } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Ellipsis } from 'lucide-react';
-import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -27,7 +26,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const columns: ColumnDef<Role>[] = [
+const columns: ColumnDef<Invitation>[] = [
     {
         id: 'select',
         header: ({ table }) => (
@@ -143,11 +142,7 @@ const columns: ColumnDef<Role>[] = [
 ];
 
 export default function Dashboard() {
-    const { invitations } = usePage().props;
-
-    useEffect(() => {
-        console.log(invitations);
-    }, []);
+    const { invitations } = usePage().props as unknown as { invitations: Invitation[] };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

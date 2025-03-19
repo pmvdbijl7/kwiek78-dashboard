@@ -5,7 +5,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { LoaderCircle } from 'lucide-react';
+import { FormEventHandler, useState } from 'react';
 
 type InviteForm = {
     firstname: string;
@@ -16,8 +17,9 @@ type InviteForm = {
 
 export default function InviteDialog() {
     const { roles } = usePage<{ roles: { id: string; name: string }[] }>().props;
+    const [open, setOpen] = useState(false);
 
-    const { data, setData, post, processing, errors, reset } = useForm<Required<InviteForm>>({
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Required<InviteForm>>({
         firstname: '',
         lastname: '',
         email: '',
@@ -26,11 +28,13 @@ export default function InviteDialog() {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('invitations.invite'));
+        post(route('invitations.invite'), {
+            onSuccess: () => setOpen(false),
+        });
     };
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8">
                     Invite new user
@@ -123,7 +127,8 @@ export default function InviteDialog() {
                 </form>
 
                 <DialogFooter>
-                    <Button form="inviteForm" type="submit">
+                    <Button form="inviteForm" type="submit" disabled={processing}>
+                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Send invite
                     </Button>
                 </DialogFooter>
