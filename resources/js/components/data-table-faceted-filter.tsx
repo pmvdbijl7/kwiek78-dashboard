@@ -53,7 +53,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
                                     options
                                         .filter((option) => selectedValues.has(option.value))
                                         .map((option) => (
-                                            <Badge variant="secondary" key={option.value} className="rounded-sm px-1 font-normal">
+                                            <Badge variant="secondary" key={option.value} className="rounded-sm px-1 font-normal capitalize">
                                                 {option.label}
                                             </Badge>
                                         ))
@@ -99,7 +99,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
                                             <CheckIcon className={cn('size-4')} />
                                         </div>
 
-                                        <span>{option.label}</span>
+                                        <span className="capitalize">{option.label}</span>
 
                                         {facets && (
                                             <span className="ml-auto flex size-4 items-center justify-center font-mono text-xs">

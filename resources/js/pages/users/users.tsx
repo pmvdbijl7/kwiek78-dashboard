@@ -45,10 +45,6 @@ const columns: ColumnDef<User>[] = [
     {
         accessorKey: 'firstname',
         header: ({ column }) => <DataTableColumnHeader column={column} title="First name" />,
-        filterFn: (row, columnId, filterValues) => {
-            if (!filterValues || filterValues.length === 0) return true;
-            return filterValues.includes(row.getValue(columnId));
-        },
         meta: {
             title: 'First name',
         },

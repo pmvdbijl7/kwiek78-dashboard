@@ -21,7 +21,7 @@ class InvitationController extends Controller
     public function index(Request $request): Response
     {
         // Retrieve all invitations
-        $invitations = Invitation::get();
+        $invitations = Invitation::orderBy('created_at', 'desc')->get();
 
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')->get();

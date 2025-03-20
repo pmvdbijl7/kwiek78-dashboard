@@ -41,6 +41,12 @@ class SetPasswordController extends Controller
         // Get invitation
         $invitation = Invitation::where('token', $request->token)->firstOrFail();
 
+        // Check if invitation is pending
+        if ($invitation->status !== 'pending') {
+            // Redirect back with error message
+            return back()->with('error', 'This invitation is no longer valid.');
+        }
+
         // Create new user
         $user = User::create([
             'firstname' => $invitation->firstname,
@@ -52,14 +58,14 @@ class SetPasswordController extends Controller
         // Assign roles to new user
         $user->assignRole($invitation->roles);
 
+        // Update invitation status
+        $invitation->update(['status' => 'accepted']);
+
         // Register new user
         event(new Registered($user));
 
         // Login new user
         Auth::login($user);
-
-        // Delete invitation
-        $invitation->delete();
 
         // Redirect to dashboard page
         return to_route('dashboard');

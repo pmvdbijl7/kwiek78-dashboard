@@ -101,6 +101,39 @@ const columns: ColumnDef<Invitation>[] = [
         enableSorting: false,
     },
     {
+        accessorKey: 'status',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        cell: ({ cell }) => {
+            const status = cell.getValue() as string;
+
+            const variant =
+                status === 'pending'
+                    ? 'blue'
+                    : status === 'accepted'
+                      ? 'green'
+                      : status === 'expired'
+                        ? 'purple'
+                        : status === 'revoked'
+                          ? 'yellow'
+                          : status === 'failed'
+                            ? 'red'
+                            : 'outline';
+
+            return (
+                <Badge variant={variant} className="capitalize">
+                    {status}
+                </Badge>
+            );
+        },
+        filterFn: (row, columnId, filterValues) => {
+            if (!filterValues || filterValues.length === 0) return true;
+            return filterValues.includes(row.getValue(columnId));
+        },
+        meta: {
+            title: 'Status',
+        },
+    },
+    {
         accessorKey: 'created_at',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
         cell: ({ cell }) => (
@@ -163,6 +196,8 @@ export default function Dashboard() {
                                 />
 
                                 <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
+
+                                <DataTableFacetedFilter column={table.getColumn('status')!} title="Status" />
                             </>
                         )}
                         actions={

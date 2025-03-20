@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->string('email')->unique();
             $table->string('token')->unique();
             $table->json('roles')->nullable();
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
