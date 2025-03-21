@@ -6,20 +6,22 @@ import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
-type InvitationRevokeDialogProps = {
+type InvitationResendDialogProps = {
     invitation: Invitation;
     open: boolean;
     close: () => void;
 };
 
-export default function InvitationRevokeDialog({ invitation, open, close }: InvitationRevokeDialogProps) {
+export default function InvitationResendDialog({ invitation, open, close }: InvitationResendDialogProps) {
     const { patch, processing } = useForm();
 
-    const revoke: FormEventHandler = (e) => {
+    const resend: FormEventHandler = (e) => {
         e.preventDefault();
-        patch(route('invitation.revoke', { id: invitation.id }), {
+        patch(route('invitation.resend', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`Successfully revoked the invite for ${invitation.firstname}.`);
+                toast.success(`Successfully invited ${invitation.firstname} again.`, {
+                    description: `An invitation email has been sent to ${invitation.email}.`,
+                });
                 close();
             },
         });
@@ -29,11 +31,9 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="leading-normal">Are you sure you want to revoke this invitation?</DialogTitle>
+                    <DialogTitle className="leading-normal">Are you sure you want to resend this invitation to {invitation.firstname}?</DialogTitle>
 
-                    <DialogDescription>
-                        Once you revoke this invitation, you can't resend a new one. You need to create a new invitation in order to send another one.
-                    </DialogDescription>
+                    <DialogDescription>A new invitation email will be sent to {invitation.email}.</DialogDescription>
                 </DialogHeader>
 
                 <DialogFooter>
@@ -41,9 +41,9 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
                         <Button variant="secondary">Cancel</Button>
                     </DialogClose>
 
-                    <Button variant="destructive" onClick={revoke} disabled={processing}>
+                    <Button onClick={resend} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Revoke invitation
+                        Resend invitation
                     </Button>
                 </DialogFooter>
             </DialogContent>

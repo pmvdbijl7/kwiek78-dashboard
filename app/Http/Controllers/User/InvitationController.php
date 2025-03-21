@@ -20,8 +20,18 @@ class InvitationController extends Controller
      */
     public function index(Request $request): Response
     {
+        // Define status sorting
+        $statusOrder = "CASE
+            WHEN status = 'pending' THEN 1
+            WHEN status = 'expired' THEN 2
+            WHEN status = 'accepted' THEN 3
+            WHEN status = 'revoked' THEN 4
+            WHEN status = 'failed' THEN 5
+            ELSE 6
+        END";
+
         // Retrieve all invitations
-        $invitations = Invitation::orderBy('created_at', 'desc')->get();
+        $invitations = Invitation::orderByRaw($statusOrder)->orderBy('created_at', 'desc')->get();
 
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')->get();
@@ -72,6 +82,26 @@ class InvitationController extends Controller
         $invitation->update([
             'status' => 'revoked'
         ]);
+
+        return to_route('invitations.index');
+    }
+
+    /**
+     * Resend an invitation
+     */
+    public function resend($id)
+    {
+        // Retrieve invitation
+        $invitation = Invitation::where('id', $id)->first();
+
+        // Update invitation status
+        $invitation->update([
+            'status' => 'pending',
+            'created_at' => now(),
+        ]);
+
+        // Send invitation email
+        Mail::to($invitation->email)->send(new InvitationMail($invitation));
 
         return to_route('invitations.index');
     }

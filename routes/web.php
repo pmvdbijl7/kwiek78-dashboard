@@ -19,6 +19,7 @@ Route::get('users', [UserController::class, 'index'])->middleware(['auth'])->nam
 Route::get('users/invitations', [InvitationController::class, 'index'])->middleware(['auth'])->name('invitations.index');
 Route::post('users/invitations', [InvitationController::class, 'invite'])->middleware(['auth'])->name('invitations.invite');
 Route::patch('users/invitation/{id}/revoke', [InvitationController::class, 'revoke'])->middleware(['auth'])->name('invitation.revoke');
+Route::patch('users/invitation/{id}/resend', [InvitationController::class, 'resend'])->middleware(['auth'])->name('invitation.resend');
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

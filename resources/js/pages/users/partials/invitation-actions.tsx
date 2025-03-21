@@ -3,6 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Invitation } from '@/types';
 import { Ellipsis } from 'lucide-react';
 import { useState } from 'react';
+import InvitationResendDialog from './invitation-resend-dialog';
 import InvitationRevokeDialog from './invitation-revoke-dialog';
 
 type InvitationActionsProps = {
@@ -10,6 +11,7 @@ type InvitationActionsProps = {
 };
 
 export default function InvitationActions({ invitation }: InvitationActionsProps) {
+    const [resendDialogOpen, setResendDialogOpen] = useState(false);
     const [revokeDialogOpen, setRevokeDialogOpen] = useState(false);
 
     return (
@@ -23,7 +25,7 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
                 </DropdownMenuTrigger>
 
                 <DropdownMenuContent align="end" className="w-[160px]">
-                    {invitation.status === 'expired' && <DropdownMenuItem>Resend</DropdownMenuItem>}
+                    {invitation.status === 'expired' && <DropdownMenuItem onClick={() => setResendDialogOpen(true)}>Resend</DropdownMenuItem>}
 
                     <DropdownMenuItem>Edit</DropdownMenuItem>
 
@@ -39,6 +41,7 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
                 </DropdownMenuContent>
             </DropdownMenu>
 
+            <InvitationResendDialog invitation={invitation} open={resendDialogOpen} close={() => setResendDialogOpen(false)} />
             <InvitationRevokeDialog invitation={invitation} open={revokeDialogOpen} close={() => setRevokeDialogOpen(false)} />
         </>
     );
