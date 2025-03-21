@@ -53,8 +53,11 @@ export interface User {
 
 export interface Invitation {
     id: number;
+    firstname: string;
+    lastname: string;
     email: string;
     token: string;
     roles: Role[];
+    status: string;
     [key: string]: unknown;
 }

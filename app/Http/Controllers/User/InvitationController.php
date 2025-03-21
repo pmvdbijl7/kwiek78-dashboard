@@ -59,4 +59,20 @@ class InvitationController extends Controller
         // Return response
         return to_route('invitations.index');
     }
+
+    /**
+     * Revoke an invitation
+     */
+    public function revoke($id)
+    {
+        // Retrieve invitation
+        $invitation = Invitation::where('id', $id)->first();
+
+        // Update invitation status
+        $invitation->update([
+            'status' => 'revoked'
+        ]);
+
+        return to_route('invitations.index');
+    }
 }

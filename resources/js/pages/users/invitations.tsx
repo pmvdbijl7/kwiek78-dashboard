@@ -2,9 +2,7 @@ import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
@@ -13,7 +11,7 @@ import { BreadcrumbItem, Invitation } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { Ellipsis } from 'lucide-react';
+import InvitationActions from './partials/invitation-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -114,7 +112,7 @@ const columns: ColumnDef<Invitation>[] = [
                       : status === 'expired'
                         ? 'purple'
                         : status === 'revoked'
-                          ? 'yellow'
+                          ? 'red'
                           : status === 'failed'
                             ? 'red'
                             : 'outline';
@@ -149,28 +147,7 @@ const columns: ColumnDef<Invitation>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => {
-            return (
-                <>
-                    <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="data-[state=open]:bg-muted flex size-8 p-0">
-                                <Ellipsis className="size-4" />
-                                <span className="sr-only">Open menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem className="!text-red-500">Delete</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </>
-            );
-        },
+        cell: ({ row }) => <InvitationActions invitation={row.original} />,
     },
 ];
 

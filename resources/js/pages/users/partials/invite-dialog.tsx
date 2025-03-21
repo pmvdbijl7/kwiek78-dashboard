@@ -20,7 +20,7 @@ export default function InviteDialog() {
     const { roles } = usePage<{ roles: { id: string; name: string }[] }>().props;
     const [open, setOpen] = useState(false);
 
-    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Required<InviteForm>>({
+    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<InviteForm>>({
         firstname: '',
         lastname: '',
         email: '',
@@ -35,6 +35,7 @@ export default function InviteDialog() {
                 toast.success(`Successfully invited ${data.firstname}`, {
                     description: `An invitation email has been sent to ${data.email}.`,
                 });
+                reset();
             },
         });
     };
