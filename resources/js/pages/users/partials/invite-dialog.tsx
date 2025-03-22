@@ -32,7 +32,7 @@ export default function InviteDialog() {
         post(route('invitations.invite'), {
             onSuccess: () => {
                 setOpen(false);
-                toast.success(`Successfully invited ${data.firstname}`, {
+                toast.success(`Successfully invited ${data.firstname} ${data.lastname}`, {
                     description: `An invitation email has been sent to ${data.email}.`,
                 });
                 reset();

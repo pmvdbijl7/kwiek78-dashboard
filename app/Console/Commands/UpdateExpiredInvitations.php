@@ -27,12 +27,12 @@ class UpdateExpiredInvitations extends Command
     public function handle()
     {
         // Retrieve expired invitations
-        $expiredInvitations = Invitation::where('updated_at', '<', now()->subDays(7))
+        $invitations = Invitation::where('sent_at', '<', now()->subDays(7))
             ->where('status', 'pending')
             ->get();
 
         // Update invitations status
-        foreach ($expiredInvitations as $invitation) {
+        foreach ($invitations as $invitation) {
             $invitation->update(['status' => 'expired']);
         }
 

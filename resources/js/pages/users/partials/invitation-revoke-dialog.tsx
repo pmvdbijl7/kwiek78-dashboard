@@ -19,7 +19,7 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.revoke', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`Successfully revoked the invite for ${invitation.firstname}.`);
+                toast.success(`Successfully revoked the invite for ${invitation.firstname} ${invitation.lastname}`);
                 close();
             },
         });

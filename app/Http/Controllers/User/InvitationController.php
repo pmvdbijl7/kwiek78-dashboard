@@ -31,7 +31,7 @@ class InvitationController extends Controller
         END";
 
         // Retrieve all invitations
-        $invitations = Invitation::orderByRaw($statusOrder)->orderBy('created_at', 'desc')->get();
+        $invitations = Invitation::orderByRaw($statusOrder)->orderBy('sent_at', 'desc')->get();
 
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')->get();
@@ -61,6 +61,8 @@ class InvitationController extends Controller
             'email' => $request->email,
             'token' => $token,
             'roles' => $roles,
+            'status' => 'pending',
+            'sent_at' => now(),
         ]);
 
         // Send invitation email
@@ -97,7 +99,7 @@ class InvitationController extends Controller
         // Update invitation status
         $invitation->update([
             'status' => 'pending',
-            'created_at' => now(),
+            'sent_at' => now(),
         ]);
 
         // Send invitation email

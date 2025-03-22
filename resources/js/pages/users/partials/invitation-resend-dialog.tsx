@@ -19,7 +19,7 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.resend', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`Successfully invited ${invitation.firstname} again.`, {
+                toast.success(`Successfully invited ${invitation.firstname} ${invitation.lastname} again`, {
                     description: `An invitation email has been sent to ${invitation.email}.`,
                 });
                 close();
@@ -31,7 +31,9 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="leading-normal">Are you sure you want to resend this invitation to {invitation.firstname}?</DialogTitle>
+                    <DialogTitle className="leading-normal">
+                        Are you sure you want to resend this invitation to {invitation.firstname} {invitation.lastname}?
+                    </DialogTitle>
 
                     <DialogDescription>A new invitation email will be sent to {invitation.email}.</DialogDescription>
                 </DialogHeader>

@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('token')->unique();
             $table->json('roles')->nullable();
             $table->string('status')->default('pending');
+            $table->timestamp('sent_at')->nullable();
+            $table->timestamp('accepted_at')->nullable();
             $table->timestamps();
         });
     }

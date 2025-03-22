@@ -19,6 +19,8 @@ class Invitation extends Model
         'token',
         'roles',
         'status',
+        'sent_at',
+        'accepted_at',
     ];
 
     /**

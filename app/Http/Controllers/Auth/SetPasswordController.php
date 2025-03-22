@@ -59,7 +59,10 @@ class SetPasswordController extends Controller
         $user->assignRole($invitation->roles);
 
         // Update invitation status
-        $invitation->update(['status' => 'accepted']);
+        $invitation->update([
+            'status' => 'accepted',
+            'accepted_at' => now(),
+        ]);
 
         // Register new user
         event(new Registered($user));

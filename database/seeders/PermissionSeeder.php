@@ -17,6 +17,19 @@ class PermissionSeeder extends Seeder
         // Define permissions
         $permissions = [
             'view dashboard',
+            'view users',
+            'create users',
+            'edit users',
+            'delete users',
+            'view invitations',
+            'create invitations',
+            'revoke invitations',
+            'resend invitations',
+            'view settings',
+            'view roles',
+            'create roles',
+            'edit roles',
+            'delete roles',
         ];
 
         // Create permissions

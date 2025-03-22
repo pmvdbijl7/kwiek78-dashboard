@@ -132,7 +132,7 @@ const columns: ColumnDef<Invitation>[] = [
         },
     },
     {
-        accessorKey: 'created_at',
+        accessorKey: 'sent_at',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
         cell: ({ cell }) => (
             <>

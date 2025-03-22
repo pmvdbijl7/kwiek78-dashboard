@@ -1,5 +1,5 @@
 import { Icon } from '@/components/icon';
-import { SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { filterNavItems } from '@/lib/utils';
 import { SharedData, type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
@@ -13,12 +13,14 @@ export function NavFooter({
     items: NavItem[];
 }) {
     const { permissions } = usePage<SharedData>().props.auth;
-    
+
     // Filter items based on permissions
     const visibleItems = filterNavItems(items, permissions);
 
     return (
         <SidebarGroup {...props} className={`p-0 ${className || ''}`}>
+            <SidebarGroupLabel>Help</SidebarGroupLabel>
+
             <SidebarGroupContent>
                 <SidebarMenu>
                     {visibleItems.map((item) => (
