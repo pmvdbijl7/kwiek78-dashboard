@@ -29,7 +29,7 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="leading-normal">Are you sure you want to revoke this invitation?</DialogTitle>
+                    <DialogTitle>Are you sure you want to revoke this invitation?</DialogTitle>
 
                     <DialogDescription>
                         Once you revoke this invitation, you can't resend a new one. You need to create a new invitation in order to send another one.

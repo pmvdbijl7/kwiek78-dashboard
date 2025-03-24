@@ -1,6 +1,6 @@
 import InputError from '@/components/input-error';
 import AppLayout from '@/layouts/app-layout';
-import SettingsLayout from '@/layouts/settings/layout';
+import ProfileSettingsLayout from '@/layouts/profile-settings/layout';
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
@@ -52,7 +52,7 @@ export default function Password() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Profile settings" />
 
-            <SettingsLayout>
+            <ProfileSettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
 
@@ -122,7 +122,7 @@ export default function Password() {
                         </div>
                     </form>
                 </div>
-            </SettingsLayout>
+            </ProfileSettingsLayout>
         </AppLayout>
     );
 }

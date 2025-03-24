@@ -151,7 +151,7 @@ const columns: ColumnDef<Invitation>[] = [
     },
 ];
 
-export default function Dashboard() {
+export default function Invitations() {
     const { invitations } = usePage().props as unknown as { invitations: Invitation[] };
 
     return (

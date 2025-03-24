@@ -1,26 +1,29 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
-import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
-import { Badge } from '@/components/ui/badge';
+import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
-import UsersLayout from '@/layouts/users/layout';
-import { User, type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import SettingsLayout from '@/layouts/settings/layout';
+import { Role, type BreadcrumbItem } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Ellipsis } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Users',
-        href: '/users',
+        title: 'Settings',
+        href: '/settings',
+    },
+    {
+        title: 'Roles',
+        href: '/settings/roles',
     },
 ];
 
-const columns: ColumnDef<User>[] = [
+const columns: ColumnDef<Role>[] = [
     {
         id: 'select',
         header: ({ table }) => (
@@ -43,64 +46,18 @@ const columns: ColumnDef<User>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'firstname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="First name" />,
+        accessorKey: 'name',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         meta: {
-            title: 'First name',
+            title: 'Name',
         },
     },
     {
-        accessorKey: 'lastname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+        accessorKey: 'users_count',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Amount of users" />,
         meta: {
-            title: 'Last name',
+            title: 'Amount of users',
         },
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Email address" />,
-        meta: {
-            title: 'Email address',
-        },
-        enableSorting: false,
-    },
-    {
-        accessorKey: 'phone',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Phone number" />,
-        meta: {
-            title: 'Phone number',
-        },
-        enableSorting: false,
-    },
-    {
-        accessorFn: (row) => (row.roles as { name: string }[]).map((role) => role.name),
-        id: 'roles',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Roles" />,
-        cell: ({ cell }) => {
-            const roles: string[] = (cell.getValue() as string[]) || [];
-
-            return (
-                <div className="flex flex-wrap gap-1">
-                    {roles.length > 0 ? (
-                        roles.map((role) => (
-                            <Badge key={role} variant="secondary" className="rounded-sm">
-                                {role}
-                            </Badge>
-                        ))
-                    ) : (
-                        <Badge variant="outline" className="rounded-sm">
-                            No roles
-                        </Badge>
-                    )}
-                </div>
-            );
-        },
-        filterFn: (row, columnId, filterValues) => {
-            if (!filterValues || filterValues.length === 0) return true;
-            const rowRoles = row.getValue(columnId) as string[];
-            return filterValues.some((value: string) => rowRoles.includes(value));
-        },
-        enableSorting: false,
     },
     {
         id: 'actions',
@@ -116,7 +73,11 @@ const columns: ColumnDef<User>[] = [
                         </DropdownMenuTrigger>
 
                         <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
+                            <DropdownMenuItem asChild>
+                                <Link href={`/settings/roles/${row.original.name.replace(/\s+/g, '-').toLowerCase()}`} prefetch>
+                                    Edit
+                                </Link>
+                            </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
@@ -129,33 +90,33 @@ const columns: ColumnDef<User>[] = [
     },
 ];
 
-export default function Users() {
-    const { users } = usePage().props as unknown as { users: User[] };
+export default function Roles() {
+    const { roles } = usePage().props as unknown as { roles: Role[] };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Users" />
+            <Head title="Roles" />
 
-            <UsersLayout>
+            <SettingsLayout>
+                <Heading title="Roles" description="Manage all roles and their permissions to this dashboard." />
+
                 <div className="space-y-6">
                     <DataTable
                         columns={columns}
-                        data={users}
+                        data={roles}
                         filters={(table) => (
                             <>
                                 <Input
-                                    placeholder="Search users..."
+                                    placeholder="Search roles..."
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(e) => table.setGlobalFilter(e.target.value)}
                                     className="h-8 w-full lg:w-[250px]"
                                 />
-
-                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
                             </>
                         )}
                     />
                 </div>
-            </UsersLayout>
+            </SettingsLayout>
         </AppLayout>
     );
 }

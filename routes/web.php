@@ -22,7 +22,8 @@ Route::post('users/invitations', [InvitationController::class, 'invite'])->middl
 Route::patch('users/invitation/{id}/revoke', [InvitationController::class, 'revoke'])->middleware(['auth', 'permission:revoke invitations'])->name('invitation.revoke');
 Route::patch('users/invitation/{id}/resend', [InvitationController::class, 'resend'])->middleware(['auth', 'permission:resend invitations'])->name('invitation.resend');
 
-Route::get('settings/roles', [RoleController::class, 'index'])->middleware(['auth'])->name('roles.index');
+Route::get('settings/roles', [RoleController::class, 'index'])->middleware(['auth', 'permission:view roles'])->name('roles.index');
+Route::get('settings/roles/{role:name}', [RoleController::class, 'edit'])->middleware(['auth', 'permission:edit roles'])->name('roles.edit');
 
 require __DIR__ . '/profile-settings.php';
 require __DIR__ . '/auth.php';

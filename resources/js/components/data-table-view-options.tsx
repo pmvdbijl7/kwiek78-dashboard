@@ -17,7 +17,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                 </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-[150px]">
+            <DropdownMenuContent align="end">
                 {table
                     .getAllColumns()
                     .filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide())

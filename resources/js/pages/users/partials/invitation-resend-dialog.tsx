@@ -31,7 +31,7 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle className="leading-normal">
+                    <DialogTitle>
                         Are you sure you want to resend this invitation to {invitation.firstname} {invitation.lastname}?
                     </DialogTitle>
 
