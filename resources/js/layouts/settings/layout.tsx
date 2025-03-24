@@ -8,5 +8,5 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     const currentPath = window.location.pathname;
 
-    return <div className="mx-auto w-full max-w-6xl px-4 py-6">{children}</div>;
+    return <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6">{children}</div>;
 }
