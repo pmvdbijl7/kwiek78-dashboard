@@ -24,6 +24,7 @@ Route::patch('users/invitation/{id}/resend', [InvitationController::class, 'rese
 
 Route::get('settings/roles', [RoleController::class, 'index'])->middleware(['auth', 'permission:view roles'])->name('roles.index');
 Route::get('settings/roles/{role:name}', [RoleController::class, 'edit'])->middleware(['auth', 'permission:edit roles'])->name('roles.edit');
+Route::patch('settings/roles/{role:id}/permissions', [RoleController::class, 'update'])->middleware(['auth', 'permission:edit roles'])->name('roles.update');
 
 require __DIR__ . '/profile-settings.php';
 require __DIR__ . '/auth.php';

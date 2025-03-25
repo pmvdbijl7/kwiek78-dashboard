@@ -32,10 +32,14 @@ class RoleController extends Controller
     public function edit(Role $role): Response
     {
         // Retrieve role permissions
-        $permissions = Role::findByName($role->name)->permissions;
+        $rolePermissions = Role::findByName($role->name)->permissions;
+
+        // Retrieve all permissions
+        $permissions = Permission::all();
 
         return Inertia::render('settings/roles/edit', [
             'role' => $role,
+            'rolePermissions' => $rolePermissions,
             'permissions' => $permissions,
         ]);
     }
