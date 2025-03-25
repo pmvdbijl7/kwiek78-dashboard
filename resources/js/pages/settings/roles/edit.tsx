@@ -1,11 +1,10 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import { type BreadcrumbItem } from '@/types';
+import PermissionsGroup from '@/pages/settings/roles/partials/permission-group';
+import { Permission, Role, type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useMemo, useState } from 'react';
@@ -17,9 +16,9 @@ type PermissionsForm = {
 
 export default function Roles() {
     const { role, rolePermissions, permissions } = usePage<{
-        role: { name: string };
+        role: Role;
         rolePermissions: { id: number }[];
-        permissions: { id: number; name: string }[];
+        permissions: Permission[];
     }>().props;
 
     const breadcrumbs: BreadcrumbItem[] = useMemo(
@@ -47,15 +46,19 @@ export default function Roles() {
     });
 
     const togglePermission = (permissionId: number, checked: boolean) => {
-        setSelectedPermissions((prev) => (checked ? [...prev, permissionId] : prev.filter((id) => id !== permissionId)));
+        setSelectedPermissions((prev) => {
+            const newPermissions = checked ? [...prev, permissionId] : prev.filter((id) => id !== permissionId);
+            setData('permissions', newPermissions);
+            return newPermissions;
+        });
     };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('roles.update', role.id), {
+        patch(route('roles.update', { role: role.id }), {
             onSuccess: () => {
-                toast.success('Successfully updated role permissions.');
+                toast.success(`Successfully updated permissions for the ${role.name} role.`);
             },
         });
     };
@@ -69,19 +72,13 @@ export default function Roles() {
 
                 <Separator />
 
-                {permissions.map((permission) => (
-                    <div key={permission.id} className="flex flex-row items-center justify-between">
-                        <Label htmlFor={permission.name} className="capitalize">
-                            {permission.name.replace(/_/g, ' ')}
-                        </Label>
-
-                        <Switch
-                            id={permission.name}
-                            checked={selectedPermissions.includes(permission.id)}
-                            onCheckedChange={(checked) => togglePermission(permission.id, checked)}
-                        />
-                    </div>
-                ))}
+                <PermissionsGroup
+                    title="Users"
+                    permissions={['view users', 'create users', 'edit users', 'delete users']}
+                    selectedPermissions={selectedPermissions}
+                    togglePermission={togglePermission}
+                    allPermissions={permissions}
+                />
 
                 <Button onClick={submit} disabled={processing}>
                     {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}

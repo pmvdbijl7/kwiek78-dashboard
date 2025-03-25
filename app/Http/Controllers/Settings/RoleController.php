@@ -43,4 +43,20 @@ class RoleController extends Controller
             'permissions' => $permissions,
         ]);
     }
+
+    /**
+     * Update the role permissions
+     */
+    public function update(Request $request, Role $role)
+    {
+        // Validate the request
+        $request->validate([
+            'permissions' => 'array',
+        ]);
+
+        // Sync the permissions
+        $role->syncPermissions($request->permissions);
+
+        return to_route('roles.edit', $role->name);
+    }
 }
