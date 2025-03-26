@@ -23,8 +23,10 @@ Route::patch('users/invitation/{id}/revoke', [InvitationController::class, 'revo
 Route::patch('users/invitation/{id}/resend', [InvitationController::class, 'resend'])->middleware(['auth', 'permission:resend invitations'])->name('invitation.resend');
 
 Route::get('settings/roles', [RoleController::class, 'index'])->middleware(['auth', 'permission:view roles'])->name('roles.index');
+Route::post('settings/roles', [RoleController::class, 'store'])->middleware(['auth', 'permission:create roles'])->name('roles.store');
 Route::get('settings/roles/{role:name}', [RoleController::class, 'edit'])->middleware(['auth', 'permission:edit roles'])->name('roles.edit');
-Route::patch('settings/roles/{role:id}/permissions', [RoleController::class, 'update'])->middleware(['auth', 'permission:edit roles'])->name('roles.update');
+Route::patch('settings/roles/{role:id}', [RoleController::class, 'update'])->middleware(['auth', 'permission:edit roles'])->name('roles.update');
+Route::patch('settings/roles/{role:id}/permissions', [RoleController::class, 'updatePermissions'])->middleware(['auth', 'permission:edit roles'])->name('roles.permissions.update');
 
 require __DIR__ . '/profile-settings.php';
 require __DIR__ . '/auth.php';

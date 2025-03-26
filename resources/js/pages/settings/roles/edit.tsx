@@ -1,24 +1,16 @@
 import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import PermissionsGroup from '@/pages/settings/roles/partials/permission-group';
-import { Permission, Role, type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useMemo, useState } from 'react';
-import { toast } from 'sonner';
-
-type PermissionsForm = {
-    permissions: number[];
-};
+import GeneralSettings from '@/pages/settings/roles/partials/general-settings';
+import Permissions from '@/pages/settings/roles/partials/permissions';
+import { Role, type BreadcrumbItem } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
+import { useMemo } from 'react';
 
 export default function Roles() {
-    const { role, rolePermissions, permissions } = usePage<{
+    const { role } = usePage<{
         role: Role;
-        rolePermissions: { id: number }[];
-        permissions: Permission[];
     }>().props;
 
     const breadcrumbs: BreadcrumbItem[] = useMemo(
@@ -39,30 +31,6 @@ export default function Roles() {
         [role],
     );
 
-    const [selectedPermissions, setSelectedPermissions] = useState<number[]>(rolePermissions.map((permission) => permission.id));
-
-    const { data, setData, patch, processing, errors, reset, recentlySuccessful } = useForm<PermissionsForm>({
-        permissions: selectedPermissions,
-    });
-
-    const togglePermission = (permissionId: number, checked: boolean) => {
-        setSelectedPermissions((prev) => {
-            const newPermissions = checked ? [...prev, permissionId] : prev.filter((id) => id !== permissionId);
-            setData('permissions', newPermissions);
-            return newPermissions;
-        });
-    };
-
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-
-        patch(route('roles.update', { role: role.id }), {
-            onSuccess: () => {
-                toast.success(`Successfully updated permissions for the ${role.name} role.`);
-            },
-        });
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={role.name} />
@@ -70,20 +38,24 @@ export default function Roles() {
             <SettingsLayout>
                 <Heading title={role.name} description={`Manage all permissions for the ${role.name} role.`} />
 
-                <Separator />
+                <Tabs defaultValue="general" orientation="vertical" className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
+                    <TabsList className="flex h-full w-full max-w-2xl flex-col lg:w-48">
+                        <TabsTrigger value="general" className="w-full justify-start text-wrap">
+                            General
+                        </TabsTrigger>
+                        <TabsTrigger value="permissions" className="w-full justify-start text-wrap">
+                            Permissions
+                        </TabsTrigger>
+                    </TabsList>
 
-                <PermissionsGroup
-                    title="Users"
-                    permissions={['view users', 'create users', 'edit users', 'delete users']}
-                    selectedPermissions={selectedPermissions}
-                    togglePermission={togglePermission}
-                    allPermissions={permissions}
-                />
+                    <TabsContent value="general" className="flex-1 md:max-w-2xl">
+                        <GeneralSettings />
+                    </TabsContent>
 
-                <Button onClick={submit} disabled={processing}>
-                    {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                    Save changes
-                </Button>
+                    <TabsContent value="permissions" className="flex-1 md:max-w-2xl">
+                        <Permissions />
+                    </TabsContent>
+                </Tabs>
             </SettingsLayout>
         </AppLayout>
     );

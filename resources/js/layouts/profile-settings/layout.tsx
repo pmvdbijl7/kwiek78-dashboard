@@ -49,7 +49,7 @@ export default function ProfileSettingsLayout({ children }: PropsWithChildren) {
                                     'bg-muted': currentPath === item.url,
                                 })}
                             >
-                                <Link href={item.url} prefetch>
+                                <Link href={item.url ?? ''} prefetch>
                                     {item.title}
                                 </Link>
                             </Button>

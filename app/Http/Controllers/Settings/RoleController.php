@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\Role\RoleCreateRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -27,6 +28,19 @@ class RoleController extends Controller
     }
 
     /**
+     * Store a new role
+     */
+    public function store(RoleCreateRequest $request)
+    {
+        // Create new role
+        $role = Role::create([
+            'name' => $request->name,
+        ]);
+
+        return to_route('roles.edit', $role->name);
+    }
+
+    /**
      * Show the role edit page
      */
     public function edit(Role $role): Response
@@ -45,9 +59,25 @@ class RoleController extends Controller
     }
 
     /**
-     * Update the role permissions
+     * Update the role
      */
     public function update(Request $request, Role $role)
+    {
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Update the role
+        $role->update($request->only('name'));
+
+        return to_route('roles.edit', $role->name);
+    }
+
+    /**
+     * Update the role permissions
+     */
+    public function updatePermissions(Request $request, Role $role)
     {
         // Validate the request
         $request->validate([

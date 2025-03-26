@@ -18,7 +18,7 @@ export default function PermissionsGroup({ title, permissions, selectedPermissio
 
     return (
         <div className="space-y-4 rounded-lg border p-4">
-            <h3 className="text-lg font-semibold capitalize">{title}</h3>
+            <h3 className="font-semibold">{title}</h3>
 
             <Separator />
 

@@ -7,6 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import CreateDialog from '@/pages/settings/roles/partials/create-dialog';
 import { Role, type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -114,6 +115,11 @@ export default function Roles() {
                                 />
                             </>
                         )}
+                        actions={
+                            <>
+                                <CreateDialog />
+                            </>
+                        }
                     />
                 </div>
             </SettingsLayout>
