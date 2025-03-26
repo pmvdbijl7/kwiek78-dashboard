@@ -37,7 +37,7 @@ export default function Permissions() {
         patch(route('roles.permissions.update', role.id), {
             preserveScroll: true,
             onSuccess: () => {
-                toast.success(`Successfully updated permissions for the ${role.name} role.`);
+                toast.success(`De rechten voor de ${role.name} rol zijn bijgewerkt`);
             },
         });
     };
@@ -45,7 +45,7 @@ export default function Permissions() {
     return (
         <div className="space-y-4">
             <PermissionsGroup
-                title="General"
+                title="Algemeen"
                 permissions={['view dashboard', 'view settings']}
                 selectedPermissions={selectedPermissions}
                 togglePermission={togglePermission}
@@ -53,7 +53,7 @@ export default function Permissions() {
             />
 
             <PermissionsGroup
-                title="Roles"
+                title="Rollen"
                 permissions={['view roles', 'create roles', 'edit roles', 'delete roles']}
                 selectedPermissions={selectedPermissions}
                 togglePermission={togglePermission}
@@ -61,7 +61,7 @@ export default function Permissions() {
             />
 
             <PermissionsGroup
-                title="Users"
+                title="Gebruikers"
                 permissions={['view users', 'create users', 'edit users', 'delete users']}
                 selectedPermissions={selectedPermissions}
                 togglePermission={togglePermission}
@@ -69,7 +69,7 @@ export default function Permissions() {
             />
 
             <PermissionsGroup
-                title="Invitations"
+                title="Uitnodigingen"
                 permissions={['view invitations', 'create invitations', 'revoke invitations', 'resend invitations']}
                 selectedPermissions={selectedPermissions}
                 togglePermission={togglePermission}
@@ -78,7 +78,7 @@ export default function Permissions() {
 
             <Button onClick={submit} disabled={processing}>
                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                Save changes
+                Opslaan
             </Button>
         </div>
     );

@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import InvitationResendDialog from '@/pages/users/partials/invitation-resend-dialog';
+import InvitationRevokeDialog from '@/pages/users/partials/invitation-revoke-dialog';
 import { Invitation } from '@/types';
 import { Ellipsis } from 'lucide-react';
 import { useState } from 'react';
-import InvitationResendDialog from './invitation-resend-dialog';
-import InvitationRevokeDialog from './invitation-revoke-dialog';
 
 type InvitationActionsProps = {
     invitation: Invitation;
@@ -14,11 +14,11 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
     const [resendDialogOpen, setResendDialogOpen] = useState(false);
     const [revokeDialogOpen, setRevokeDialogOpen] = useState(false);
 
-    const canResend = invitation.status === 'expired' || invitation.status === 'revoked';
-    const canRevoke = invitation.status === 'pending';
+    const canResend = invitation.status === 'verlopen' || invitation.status === 'geannuleerd';
+    const canRevoke = invitation.status === 'in afwachting';
 
     return (
-        invitation.status !== 'accepted' && (
+        invitation.status !== 'geaccepteerd' && (
             <>
                 <DropdownMenu modal={false}>
                     <DropdownMenuTrigger asChild>
@@ -29,11 +29,11 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
                     </DropdownMenuTrigger>
 
                     <DropdownMenuContent align="end" className="w-[160px]">
-                        {canResend && <DropdownMenuItem onClick={() => setResendDialogOpen(true)}>Resend</DropdownMenuItem>}
+                        {canResend && <DropdownMenuItem onClick={() => setResendDialogOpen(true)}>Opnieuw versturen</DropdownMenuItem>}
 
                         {canRevoke && (
                             <DropdownMenuItem className="!text-red-600" onClick={() => setRevokeDialogOpen(true)}>
-                                Revoke
+                                Annuleren
                             </DropdownMenuItem>
                         )}
                     </DropdownMenuContent>

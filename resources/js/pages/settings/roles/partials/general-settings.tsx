@@ -24,7 +24,7 @@ export default function GeneralSettings() {
 
         patch(route('roles.update', role.id), {
             onSuccess: () => {
-                toast.success(`Successfully updated the ${data.name} role.`);
+                toast.success(`De ${data.name} rol is bijgewerkt`);
             },
         });
     };
@@ -32,7 +32,7 @@ export default function GeneralSettings() {
     return (
         <form onSubmit={submit} className="space-y-6">
             <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">Naam</Label>
 
                 <Input
                     id="name"
@@ -49,7 +49,7 @@ export default function GeneralSettings() {
 
             <Button disabled={processing}>
                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                Save
+                Opslaan
             </Button>
         </form>
     );

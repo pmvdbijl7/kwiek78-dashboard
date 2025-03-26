@@ -13,7 +13,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
             <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="ml-auto hidden h-8 lg:flex">
                     <Settings2 className="size-4" />
-                    Toggle columns
+                    Kolommen
                 </Button>
             </DropdownMenuTrigger>
 

@@ -24,7 +24,7 @@ export default function CreateDialog() {
         post(route('roles.store'), {
             onSuccess: () => {
                 setOpen(false);
-                toast.success(`Successfully created the ${data.name} role`);
+                toast.success(`De ${data.name} rol is aangemaakt`);
                 reset();
             },
         });
@@ -34,21 +34,21 @@ export default function CreateDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8">
-                    Create new role
+                    Nieuwe rol aanmaken
                 </Button>
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Create new role</DialogTitle>
+                    <DialogTitle>Nieuwe rol aanmaken</DialogTitle>
 
-                    <DialogDescription>Create a new role to assign to users.</DialogDescription>
+                    <DialogDescription>Maak een nieuwe rol om aan gebruikers toe te wijzen.</DialogDescription>
                 </DialogHeader>
 
                 <form className="flex flex-col gap-6" id="createForm" onSubmit={submit}>
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="name">Name</Label>
+                            <Label htmlFor="name">Naam</Label>
 
                             <Input
                                 id="name"
@@ -59,7 +59,7 @@ export default function CreateDialog() {
                                 autoComplete="name"
                                 value={data.name}
                                 onChange={(e) => setData('name', e.target.value)}
-                                placeholder="Member"
+                                placeholder="Lid"
                             />
 
                             <InputError message={errors.name} />
@@ -70,7 +70,7 @@ export default function CreateDialog() {
                 <DialogFooter>
                     <Button form="createForm" type="submit" disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create role
+                        Rol aanmaken
                     </Button>
                 </DialogFooter>
             </DialogContent>

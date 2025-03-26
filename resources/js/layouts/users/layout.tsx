@@ -7,12 +7,12 @@ import { type PropsWithChildren } from 'react';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Users',
+        title: 'Gebruikers',
         url: '/users',
         icon: null,
     },
     {
-        title: 'Invitations',
+        title: 'Uitnodigingen',
         url: '/users/invitations',
         icon: null,
     },
@@ -28,7 +28,7 @@ export default function UsersLayout({ children }: PropsWithChildren) {
 
     return (
         <div className="mx-auto w-full max-w-6xl px-4 py-6">
-            <Heading title="Users" description="Manage all users that have access to this dashboard." />
+            <Heading title="Gebruikers" description="Beheer alle gebruikers die toegang hebben tot dit dashboard." />
 
             <div className="flex flex-col space-y-6">
                 <aside className="w-full">

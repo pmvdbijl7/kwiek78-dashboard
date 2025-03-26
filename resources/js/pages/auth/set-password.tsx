@@ -32,13 +32,13 @@ export default function Register() {
     };
 
     return (
-        <AuthLayout title="Set your password" description="Enter and confirm password to create your account.">
-            <Head title="Set password" />
+        <AuthLayout title="Wachtwoord instellen" description="Vul je wachtwoord in en bevestig om jouw account te voltooien.">
+            <Head title="Wachtwoord instellen" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
                 <div className="grid gap-6">
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password</Label>
+                        <Label htmlFor="password">Wachtwoord</Label>
                         <Input
                             id="password"
                             type="password"
@@ -48,13 +48,13 @@ export default function Register() {
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
                             disabled={processing}
-                            placeholder="Password"
+                            placeholder="Wachtwoord"
                         />
                         <InputError message={errors.password} />
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password_confirmation">Confirm password</Label>
+                        <Label htmlFor="password_confirmation">Herhaal wachtwoord</Label>
                         <Input
                             id="password_confirmation"
                             type="password"
@@ -64,21 +64,21 @@ export default function Register() {
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
                             disabled={processing}
-                            placeholder="Confirm password"
+                            placeholder="Herhaal wachtwoord"
                         />
                         <InputError message={errors.password_confirmation} />
                     </div>
 
                     <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Create account
+                        Account aanmaken
                     </Button>
                 </div>
 
                 <div className="text-muted-foreground text-center text-sm">
-                    Already have an account?{' '}
+                    Heb je al een account?{' '}
                     <TextLink href={route('login')} tabIndex={6}>
-                        Log in
+                        Inloggen
                     </TextLink>
                 </div>
             </form>

@@ -47,7 +47,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
                             <div className="hidden space-x-1 lg:flex">
                                 {selectedValues.size > 2 ? (
                                     <Badge variant="secondary" className="rounded-sm px-1 font-normal">
-                                        {selectedValues.size} selected
+                                        {selectedValues.size} geselecteerd
                                     </Badge>
                                 ) : (
                                     options
@@ -69,7 +69,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
                     <CommandInput placeholder={title} />
 
                     <CommandList>
-                        <CommandEmpty>No results.</CommandEmpty>
+                        <CommandEmpty>Geen resultaten</CommandEmpty>
 
                         <CommandGroup>
                             {options.map((option) => {
@@ -120,7 +120,7 @@ export function DataTableFacetedFilter<TData, TValue>({ column, title, getLabel 
 
                                 <CommandGroup>
                                     <CommandItem onSelect={() => column?.setFilterValue(undefined)} className="justify-center text-center">
-                                        Clear filters
+                                        Reset filters
                                     </CommandItem>
                                 </CommandGroup>
                             </>

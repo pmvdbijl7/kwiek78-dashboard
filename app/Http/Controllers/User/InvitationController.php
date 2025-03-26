@@ -22,11 +22,11 @@ class InvitationController extends Controller
     {
         // Define status sorting
         $statusOrder = "CASE
-            WHEN status = 'pending' THEN 1
-            WHEN status = 'expired' THEN 2
-            WHEN status = 'accepted' THEN 3
-            WHEN status = 'revoked' THEN 4
-            WHEN status = 'failed' THEN 5
+            WHEN status = 'in afwachting' THEN 1
+            WHEN status = 'verlopen' THEN 2
+            WHEN status = 'geaccepteerd' THEN 3
+            WHEN status = 'geannuleerd' THEN 4
+            WHEN status = 'mislukt' THEN 5
             ELSE 6
         END";
 
@@ -61,7 +61,7 @@ class InvitationController extends Controller
             'email' => $request->email,
             'token' => $token,
             'roles' => $roles,
-            'status' => 'pending',
+            'status' => 'in afwachting',
             'sent_at' => now(),
         ]);
 
@@ -82,7 +82,7 @@ class InvitationController extends Controller
 
         // Update invitation status
         $invitation->update([
-            'status' => 'revoked'
+            'status' => 'geannuleerd'
         ]);
 
         return to_route('invitations.index');
@@ -98,7 +98,7 @@ class InvitationController extends Controller
 
         // Update invitation status
         $invitation->update([
-            'status' => 'pending',
+            'status' => 'in afwachting',
             'sent_at' => now(),
         ]);
 

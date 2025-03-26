@@ -19,7 +19,7 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.revoke', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`Successfully revoked the invite for ${invitation.firstname} ${invitation.lastname}`);
+                toast.success(`De uitnodiging voor ${invitation.firstname} ${invitation.lastname} is geannuleerd`);
                 close();
             },
         });
@@ -29,21 +29,21 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Are you sure you want to revoke this invitation?</DialogTitle>
+                    <DialogTitle>Weet je zeker dat je deze uitnodiging wilt annuleren?</DialogTitle>
 
                     <DialogDescription>
-                        Once you revoke this invitation, you can't resend a new one. You need to create a new invitation in order to send another one.
+                        Als je deze uitnodiging annuleert, kan de gebruiker geen account aanmaken. Je zal de uitnodiging opnieuw moeten versturen.
                     </DialogDescription>
                 </DialogHeader>
 
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="secondary">Cancel</Button>
+                        <Button variant="secondary">Sluit</Button>
                     </DialogClose>
 
                     <Button variant="destructive" onClick={revoke} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Revoke invitation
+                        Uitnodiging annuleren
                     </Button>
                 </DialogFooter>
             </DialogContent>

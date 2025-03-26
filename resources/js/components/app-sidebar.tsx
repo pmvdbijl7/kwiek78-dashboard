@@ -24,18 +24,18 @@ const mainNavItems: NavItem[] = [
         permission: 'view dashboard',
     },
     {
-        title: 'Users',
+        title: 'Gebruikers',
         url: '/users',
         icon: Users,
         permission: 'view users',
     },
     {
-        title: 'Settings',
+        title: 'Instellingen',
         icon: Settings,
         permission: 'view settings',
         items: [
             {
-                title: 'Roles',
+                title: 'Rollen',
                 url: '/settings/roles',
                 permission: 'view roles',
             },

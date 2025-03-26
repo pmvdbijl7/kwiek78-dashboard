@@ -15,11 +15,11 @@ import { Ellipsis } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        title: 'Instellingen',
         href: '/settings',
     },
     {
-        title: 'Roles',
+        title: 'Rollen',
         href: '/settings/roles',
     },
 ];
@@ -48,16 +48,16 @@ const columns: ColumnDef<Role>[] = [
     },
     {
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Naam" />,
         meta: {
-            title: 'Name',
+            title: 'Naam',
         },
     },
     {
         accessorKey: 'users_count',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Amount of users" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Aantal gebruikers" />,
         meta: {
-            title: 'Amount of users',
+            title: 'Aantal gebruikers',
         },
     },
     {
@@ -76,13 +76,13 @@ const columns: ColumnDef<Role>[] = [
                         <DropdownMenuContent align="end" className="w-[160px]">
                             <DropdownMenuItem asChild>
                                 <Link href={`/settings/roles/${row.original.slug}`} prefetch>
-                                    Edit
+                                    Bewerk
                                 </Link>
                             </DropdownMenuItem>
 
                             <DropdownMenuSeparator />
 
-                            <DropdownMenuItem className="!text-red-500">Delete</DropdownMenuItem>
+                            <DropdownMenuItem className="!text-red-500">Verwijder</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </>
@@ -96,10 +96,10 @@ export default function Roles() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Roles" />
+            <Head title="Rollen" />
 
             <SettingsLayout>
-                <Heading title="Roles" description="Manage all roles and their permissions to this dashboard." />
+                <Heading title="Rollen" description="Beheer alle rollen en hun rechten op dit dashboard." />
 
                 <div className="space-y-6">
                     <DataTable
@@ -108,7 +108,7 @@ export default function Roles() {
                         filters={(table) => (
                             <>
                                 <Input
-                                    placeholder="Search roles..."
+                                    placeholder="Zoek rollen..."
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(e) => table.setGlobalFilter(e.target.value)}
                                     className="h-8 w-full lg:w-[250px]"

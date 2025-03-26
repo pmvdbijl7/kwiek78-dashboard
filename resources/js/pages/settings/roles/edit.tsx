@@ -16,11 +16,11 @@ export default function Roles() {
     const breadcrumbs: BreadcrumbItem[] = useMemo(
         () => [
             {
-                title: 'Settings',
+                title: 'Instellingen',
                 href: '/settings',
             },
             {
-                title: 'Roles',
+                title: 'Rollen',
                 href: '/settings/roles',
             },
             {
@@ -36,15 +36,15 @@ export default function Roles() {
             <Head title={role.name} />
 
             <SettingsLayout>
-                <Heading title={role.name} description={`Manage all permissions for the ${role.name} role.`} />
+                <Heading title={role.name} description={`Beheer alle rechten voor de  ${role.name} rol.`} />
 
                 <Tabs defaultValue="general" orientation="vertical" className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                     <TabsList className="flex h-full w-full max-w-2xl flex-col lg:w-48">
                         <TabsTrigger value="general" className="w-full justify-start text-wrap">
-                            General
+                            Algemeen
                         </TabsTrigger>
                         <TabsTrigger value="permissions" className="w-full justify-start text-wrap">
-                            Permissions
+                            Rechten
                         </TabsTrigger>
                     </TabsList>
 

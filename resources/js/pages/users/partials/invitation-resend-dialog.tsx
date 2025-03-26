@@ -19,8 +19,8 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.resend', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`Successfully invited ${invitation.firstname} ${invitation.lastname} again`, {
-                    description: `An invitation email has been sent to ${invitation.email}.`,
+                toast.success(`${invitation.firstname} ${invitation.lastname} is opnieuw uitgenodigd`, {
+                    description: `Er is een uitnodigingsmail verstuurd naar ${invitation.email}.`,
                 });
                 close();
             },
@@ -32,20 +32,20 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Are you sure you want to resend this invitation to {invitation.firstname} {invitation.lastname}?
+                        Weet je zeker dat je deze uitnodiging opnieuw wilt versturen naar {invitation.firstname} {invitation.lastname}?
                     </DialogTitle>
 
-                    <DialogDescription>A new invitation email will be sent to {invitation.email}.</DialogDescription>
+                    <DialogDescription>Er wordt een nieuwe uitnodigingsmail gestuurd naar {invitation.email}.</DialogDescription>
                 </DialogHeader>
 
                 <DialogFooter>
                     <DialogClose asChild>
-                        <Button variant="secondary">Cancel</Button>
+                        <Button variant="secondary">Sluit</Button>
                     </DialogClose>
 
                     <Button onClick={resend} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Resend invitation
+                        Opnieuw versturen
                     </Button>
                 </DialogFooter>
             </DialogContent>

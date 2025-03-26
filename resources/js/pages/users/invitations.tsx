@@ -15,11 +15,11 @@ import InvitationActions from './partials/invitation-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Users',
+        title: 'Gebruikers',
         href: '/users',
     },
     {
-        title: 'Invitations',
+        title: 'Uitnodigingen',
         href: '/users/invitations',
     },
 ];
@@ -48,30 +48,30 @@ const columns: ColumnDef<Invitation>[] = [
     },
     {
         accessorKey: 'firstname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="First name" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Voornaam" />,
         meta: {
-            title: 'First name',
+            title: 'Voornaam',
         },
     },
     {
         accessorKey: 'lastname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Achternaam" />,
         meta: {
-            title: 'Last name',
+            title: 'Achternaam',
         },
     },
     {
         accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Email address" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="E-mailadres" />,
         meta: {
-            title: 'Email address',
+            title: 'E-mailadres',
         },
         enableSorting: false,
     },
     {
         accessorFn: (row) => (row.roles as { name: string }[]).map((role) => role.name),
         id: 'roles',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Roles" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Rollen" />,
         cell: ({ cell }) => {
             const roles: string[] = (cell.getValue() as string[]) || [];
 
@@ -85,7 +85,7 @@ const columns: ColumnDef<Invitation>[] = [
                         ))
                     ) : (
                         <Badge variant="outline" className="rounded-sm">
-                            No roles
+                            Geen rol
                         </Badge>
                     )}
                 </div>
@@ -105,15 +105,15 @@ const columns: ColumnDef<Invitation>[] = [
             const status = cell.getValue() as string;
 
             const variant =
-                status === 'pending'
+                status === 'in afwachting'
                     ? 'blue'
-                    : status === 'accepted'
+                    : status === 'geaccepteerd'
                       ? 'green'
-                      : status === 'expired'
+                      : status === 'verlopen'
                         ? 'purple'
-                        : status === 'revoked'
+                        : status === 'geannuleerd'
                           ? 'red'
-                          : status === 'failed'
+                          : status === 'mislukt'
                             ? 'red'
                             : 'outline';
 
@@ -133,7 +133,7 @@ const columns: ColumnDef<Invitation>[] = [
     },
     {
         accessorKey: 'sent_at',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Verstuurd" />,
         cell: ({ cell }) => (
             <>
                 {format(new Date(cell.getValue() as string), 'd MMMM, yyyy')}
@@ -142,7 +142,7 @@ const columns: ColumnDef<Invitation>[] = [
             </>
         ),
         meta: {
-            title: 'Sent at',
+            title: 'Verstuurd',
         },
     },
     {
@@ -156,7 +156,7 @@ export default function Invitations() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Invitations" />
+            <Head title="Uitnodigingen" />
 
             <UsersLayout>
                 <div className="space-y-6">
@@ -166,13 +166,13 @@ export default function Invitations() {
                         filters={(table) => (
                             <>
                                 <Input
-                                    placeholder="Search invitations..."
+                                    placeholder="Zoek uitnodigingen..."
                                     value={table.getState().globalFilter ?? ''}
                                     onChange={(e) => table.setGlobalFilter(e.target.value)}
                                     className="h-8 w-full lg:w-[250px]"
                                 />
 
-                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Role" />
+                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Rol" />
 
                                 <DataTableFacetedFilter column={table.getColumn('status')!} title="Status" />
                             </>

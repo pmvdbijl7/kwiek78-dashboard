@@ -93,7 +93,7 @@ export function DataTable<TData>({ columns, data, filters, actions }: DataTableP
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                    Geen resultaten
                                 </TableCell>
                             </TableRow>
                         )}

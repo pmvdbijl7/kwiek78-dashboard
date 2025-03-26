@@ -32,8 +32,8 @@ export default function InviteDialog() {
         post(route('invitations.invite'), {
             onSuccess: () => {
                 setOpen(false);
-                toast.success(`Successfully invited ${data.firstname} ${data.lastname}`, {
-                    description: `An invitation email has been sent to ${data.email}.`,
+                toast.success(`${data.firstname} ${data.lastname} is uitgenodigd`, {
+                    description: `Er is een uitnodigingsmail verstuurd naar ${data.email}.`,
                 });
                 reset();
             },
@@ -44,21 +44,21 @@ export default function InviteDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button size="sm" className="h-8">
-                    Invite new user
+                    Nieuwe uitnodiging
                 </Button>
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Invite new user</DialogTitle>
+                    <DialogTitle>Nieuwe gebruiker uitnodigen</DialogTitle>
 
-                    <DialogDescription>Invite a new user to use the dashboard.</DialogDescription>
+                    <DialogDescription>Nodig een nieuwe gebruiker uit om het dashboard te gebruiken.</DialogDescription>
                 </DialogHeader>
 
                 <form className="flex flex-col gap-6" id="inviteForm" onSubmit={submit}>
                     <div className="grid gap-6">
                         <div className="grid gap-2">
-                            <Label htmlFor="firstname">First name</Label>
+                            <Label htmlFor="firstname">Voornaam</Label>
 
                             <Input
                                 id="firstname"
@@ -76,7 +76,7 @@ export default function InviteDialog() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="lastname">Last name</Label>
+                            <Label htmlFor="lastname">Achternaam</Label>
 
                             <Input
                                 id="lastname"
@@ -93,7 +93,7 @@ export default function InviteDialog() {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email address</Label>
+                            <Label htmlFor="email">E-mailadres</Label>
 
                             <Input
                                 id="email"
@@ -110,7 +110,7 @@ export default function InviteDialog() {
                         </div>
 
                         <div className="grid gap-3">
-                            <Label htmlFor="roles">Roles</Label>
+                            <Label htmlFor="roles">Rollen</Label>
 
                             <div className="grid gap-2">
                                 {roles.map((role) => (
@@ -136,7 +136,7 @@ export default function InviteDialog() {
                 <DialogFooter>
                     <Button form="inviteForm" type="submit" disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Send invite
+                        Stuur uitnodiging
                     </Button>
                 </DialogFooter>
             </DialogContent>
