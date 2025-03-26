@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\Role\RoleCreateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -32,12 +33,16 @@ class RoleController extends Controller
      */
     public function store(RoleCreateRequest $request)
     {
+        // Generate a slug
+        $slug = Str::slug($request->name);
+
         // Create new role
         $role = Role::create([
             'name' => $request->name,
+            'slug' => $slug,
         ]);
 
-        return to_route('roles.edit', $role->name);
+        return to_route('roles.edit', $role->slug);
     }
 
     /**
@@ -65,13 +70,13 @@ class RoleController extends Controller
     {
         // Validate the request
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:roles,name',
         ]);
 
         // Update the role
         $role->update($request->only('name'));
 
-        return to_route('roles.edit', $role->name);
+        return to_route('roles.edit', $role->slug);
     }
 
     /**
@@ -87,6 +92,17 @@ class RoleController extends Controller
         // Sync the permissions
         $role->syncPermissions($request->permissions);
 
-        return to_route('roles.edit', $role->name);
+        return to_route('roles.edit', $role->slug);
+    }
+
+    /**
+     * Delete the role
+     */
+    public function destroy(Role $role)
+    {
+        // Delete the role
+        $role->delete();
+
+        return to_route('roles.index');
     }
 }

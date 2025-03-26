@@ -25,7 +25,7 @@ export default function Roles() {
             },
             {
                 title: role.name,
-                href: `/settings/roles/${role.name.replace(/\s+/g, '-').toLowerCase()}`,
+                href: `/settings/roles/${role.slug}`,
             },
         ],
         [role],

@@ -75,7 +75,7 @@ const columns: ColumnDef<Role>[] = [
 
                         <DropdownMenuContent align="end" className="w-[160px]">
                             <DropdownMenuItem asChild>
-                                <Link href={`/settings/roles/${row.original.name.replace(/\s+/g, '-').toLowerCase()}`} prefetch>
+                                <Link href={`/settings/roles/${row.original.slug}`} prefetch>
                                     Edit
                                 </Link>
                             </DropdownMenuItem>

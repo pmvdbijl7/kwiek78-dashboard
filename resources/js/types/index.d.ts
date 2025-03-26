@@ -42,6 +42,7 @@ export interface Permission {
 export interface Role {
     id: number;
     name: string;
+    slug: string;
 }
 
 export interface User {
