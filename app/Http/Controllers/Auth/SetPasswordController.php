@@ -10,9 +10,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class SetPasswordController extends Controller
 {
@@ -42,25 +44,38 @@ class SetPasswordController extends Controller
         $invitation = Invitation::where('token', $request->token)->firstOrFail();
 
         // Check if invitation is pending
-        if ($invitation->status !== 'pending') {
+        if ($invitation->status !== 'in afwachting') {
             // Redirect back with error message
             return back()->with('error', 'This invitation is no longer valid.');
         }
 
+        // Get full name and create slug
+        $fullName = $invitation->firstname . ' ' . $invitation->lastname;
+        $slug = Str::slug($fullName);
+
         // Create new user
         $user = User::create([
+            'slug' => $slug,
             'firstname' => $invitation->firstname,
             'lastname' => $invitation->lastname,
             'email' => $invitation->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Assign roles to new user
-        $user->assignRole($invitation->roles);
+        // Extract role IDs from the invitation
+        $invitedRoleIds = collect($invitation->roles)->pluck('id')->toArray();
+
+        // Get only the existing roles based on ID
+        $existingRoles = Role::whereIn('id', $invitedRoleIds)->get();
+
+        // Assign only existing roles to the user
+        if ($existingRoles->isNotEmpty()) {
+            $user->assignRole($existingRoles);
+        }
 
         // Update invitation status
         $invitation->update([
-            'status' => 'accepted',
+            'status' => 'geaccepteerd',
             'accepted_at' => now(),
         ]);
 

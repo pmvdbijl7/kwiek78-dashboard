@@ -15,10 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create Super Admin role
-        $adminRole = Role::create(['name' => 'Super Admin', 'slug' => 'super-admin']);
+        $adminRole = Role::create(['slug' => 'super-admin', 'name' => 'Super Admin']);
 
         // Create super admin user
         $adminUser = User::create([
+            'slug' => 'patrick-van-der-bijl',
             'firstname' => 'Patrick',
             'lastname' => 'van der Bijl',
             'email' => 'pmvdbijl7@gmail.com',

@@ -1,17 +1,15 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import Heading from '@/components/heading';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import CreateDialog from '@/pages/settings/roles/partials/create-dialog';
 import { Role, type BreadcrumbItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { Ellipsis } from 'lucide-react';
+import RoleActions from './partials/role-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -62,32 +60,7 @@ const columns: ColumnDef<Role>[] = [
     },
     {
         id: 'actions',
-        cell: ({ row }) => {
-            return (
-                <>
-                    <DropdownMenu modal={false}>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="data-[state=open]:bg-muted flex size-8 p-0">
-                                <Ellipsis className="size-4" />
-                                <span className="sr-only">Open menu</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem asChild>
-                                <Link href={`/settings/roles/${row.original.slug}`} prefetch>
-                                    Bewerk
-                                </Link>
-                            </DropdownMenuItem>
-
-                            <DropdownMenuSeparator />
-
-                            <DropdownMenuItem className="!text-red-500">Verwijder</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </>
-            );
-        },
+        cell: ({ row }) => <RoleActions role={row.original} />,
     },
 ];
 
