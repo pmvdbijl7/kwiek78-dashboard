@@ -6,12 +6,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
+import InvitationActions from '@/pages/users/partials/invitation-actions';
 import InviteDialog from '@/pages/users/partials/invite-dialog';
 import { BreadcrumbItem, Invitation } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import InvitationActions from './partials/invitation-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
