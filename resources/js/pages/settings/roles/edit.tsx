@@ -8,7 +8,7 @@ import { Role, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { useMemo } from 'react';
 
-export default function Roles() {
+export default function EditRole() {
     const { role } = usePage<{
         role: Role;
     }>().props;

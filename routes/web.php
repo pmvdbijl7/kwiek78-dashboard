@@ -17,6 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('users', [UserController::class, 'index'])->middleware(['auth', 'permission:view users'])->name('users.index');
+Route::get('users/{user:slug}', [UserController::class, 'edit'])->middleware(['auth', 'permission:edit users'])->name('users.edit');
+Route::patch('users/{user:id}', [UserController::class, 'update'])->middleware(['auth', 'permission:edit users'])->name('users.update');
 Route::delete('users/{user:id}', [UserController::class, 'destroy'])->middleware(['auth', 'permission:delete users'])->name('users.destroy');
 
 Route::get('users/invitations', [InvitationController::class, 'index'])->middleware(['auth', 'permission:view invitations'])->name('invitations.index');

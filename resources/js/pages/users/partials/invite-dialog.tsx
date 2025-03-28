@@ -4,6 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Role } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
@@ -17,7 +18,7 @@ type InviteForm = {
 };
 
 export default function InviteDialog() {
-    const { roles } = usePage<{ roles: { id: string; name: string }[] }>().props;
+    const { roles } = usePage<{ roles: Role[] }>().props;
     const [open, setOpen] = useState(false);
 
     const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<InviteForm>>({

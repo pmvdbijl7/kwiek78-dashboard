@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Invitation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -24,5 +27,54 @@ class UserController extends Controller
         return Inertia::render('users/users', [
             'users' => $users
         ]);
+    }
+
+    /**
+     * Show the user edit page
+     */
+    public function edit(User $user): Response
+    {
+        // Retrieve all roles
+        $roles = Role::whereNot('name', 'Super Admin')->get();
+
+        return Inertia::render('users/edit', [
+            'user' => $user,
+            'userRoles' => $user->roles,
+            'roles' => $roles,
+        ]);
+    }
+
+    /**
+     * Update the user
+     */
+    public function update(Request $request, User $user)
+    {
+        // Validate the request
+        $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                Rule::unique(User::class)->ignore($user->id),
+                Rule::unique(Invitation::class)->ignore($user->email, 'email'),
+            ],
+            'roles' => 'required|array',
+        ]);
+
+        // Update the user
+        $user->update([
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+        ]);
+
+        // Sync the roles
+        $user->syncRoles($request->roles);
+
+        return to_route('users.edit', $user->slug);
     }
 }
