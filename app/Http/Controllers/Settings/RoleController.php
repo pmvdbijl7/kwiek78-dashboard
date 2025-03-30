@@ -20,6 +20,7 @@ class RoleController extends Controller
     {
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')
+            ->orderBy('id')
             ->withCount('users')
             ->get();
 
@@ -34,7 +35,8 @@ class RoleController extends Controller
     public function store(RoleCreateRequest $request)
     {
         // Generate a slug
-        $slug = Str::slug($request->name);
+        $baseSlug = Str::slug($request->name);
+        $slug = $this->generateUniqueSlug($baseSlug);
 
         // Create new role
         $role = Role::create([
@@ -104,5 +106,21 @@ class RoleController extends Controller
         $role->delete();
 
         return to_route('roles.index');
+    }
+
+    /**
+     * Generate a unique slug by checking if it already exists
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $count = 2;
+
+        while (Role::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
     }
 }

@@ -1,14 +1,15 @@
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem, Role, User } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useMemo } from 'react';
+import { FormEventHandler, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 type UserEditForm = {
@@ -20,6 +21,7 @@ type UserEditForm = {
 
 export default function EditUser() {
     const { user, userRoles, roles } = usePage<{ user: User; userRoles: Role[]; roles: Role[] }>().props;
+    const [rolesDropdownOpen, setRolesDropdownOpen] = useState(false);
 
     const breadcrumbs: BreadcrumbItem[] = useMemo(
         () => [
@@ -116,19 +118,39 @@ export default function EditUser() {
                         <Label htmlFor="roles">Rollen</Label>
 
                         <div className="grid gap-2">
-                            {roles.map((role) => (
-                                <div key={role.id} className="flex items-center space-x-2">
-                                    <Checkbox
-                                        id={role.name}
-                                        checked={data.roles.includes(role.id)}
-                                        onCheckedChange={(checked) => {
-                                            setData('roles', checked ? [...data.roles, role.id] : data.roles.filter((r) => r !== role.id));
-                                        }}
-                                    />
+                            <DropdownMenu open={rolesDropdownOpen} onOpenChange={setRolesDropdownOpen}>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        className={`h-auto w-full flex-wrap justify-start gap-1 ${data.roles.length > 0 && 'pl-2'}`}
+                                    >
+                                        {data.roles.length > 0
+                                            ? roles
+                                                  .filter((role) => data.roles.includes(role.id))
+                                                  .map((role) => (
+                                                      <Badge key={role.id} variant="secondary">
+                                                          {role.name}
+                                                      </Badge>
+                                                  ))
+                                            : 'Selecteer rollen'}
+                                    </Button>
+                                </DropdownMenuTrigger>
 
-                                    <Label htmlFor={role.name}>{role.name}</Label>
-                                </div>
-                            ))}
+                                <DropdownMenuContent align="start">
+                                    {roles.map((role) => (
+                                        <DropdownMenuCheckboxItem
+                                            key={role.id}
+                                            checked={data.roles.includes(role.id)}
+                                            onCheckedChange={(checked) => {
+                                                setData('roles', checked ? [...data.roles, role.id] : data.roles.filter((r) => r !== role.id));
+                                            }}
+                                            onSelect={(e) => e.preventDefault()}
+                                        >
+                                            {role.name}
+                                        </DropdownMenuCheckboxItem>
+                                    ))}
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
 
                         <InputError message={errors.roles} />

@@ -23,6 +23,14 @@ class SetPasswordController extends Controller
      */
     public function create($token): Response
     {
+        // Check if the token exists in the invitations table
+        $invitation = Invitation::where('token', $token)->first();
+
+        // If the token does not exist, return a 404 error
+        if (!$invitation) {
+            abort(404);
+        }
+
         // Return Inertia response
         return Inertia::render('auth/set-password', [
             'token' => $token
@@ -51,7 +59,8 @@ class SetPasswordController extends Controller
 
         // Get full name and create slug
         $fullName = $invitation->firstname . ' ' . $invitation->lastname;
-        $slug = Str::slug($fullName);
+        $baseSlug = Str::slug($fullName);
+        $slug = $this->generateUniqueSlug($baseSlug);
 
         // Create new user
         $user = User::create([
@@ -87,5 +96,21 @@ class SetPasswordController extends Controller
 
         // Redirect to dashboard page
         return to_route('dashboard');
+    }
+
+    /**
+     * Generate a unique slug by checking if it already exists
+     */
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $count = 2;
+
+        while (User::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $count;
+            $count++;
+        }
+
+        return $slug;
     }
 }

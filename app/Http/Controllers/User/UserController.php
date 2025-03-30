@@ -77,4 +77,16 @@ class UserController extends Controller
 
         return to_route('users.edit', $user->slug);
     }
+
+    /**
+     * Delete the user
+     */
+    public function destroy(User $user)
+    {
+        // Delete the user
+        $user->delete();
+
+        // Redirect to the users overview page
+        return to_route('users.index');
+    }
 }

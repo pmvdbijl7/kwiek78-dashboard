@@ -18,7 +18,7 @@ class InvitationController extends Controller
     /**
      * Show the invitations overview page
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         // Define status sorting
         $statusOrder = "CASE
@@ -68,6 +68,11 @@ class InvitationController extends Controller
         // Send invitation email
         Mail::to($request->email)->send(new InvitationMail($invitation));
 
+        // Log the invitation
+        activity()
+            ->performedOn($invitation)
+            ->log('Uitnodiging verzonden naar ' . $request->email);
+
         // Return response
         return to_route('invitations.index');
     }
@@ -75,15 +80,18 @@ class InvitationController extends Controller
     /**
      * Revoke an invitation
      */
-    public function revoke($id)
+    public function revoke(Invitation $invitation)
     {
-        // Retrieve invitation
-        $invitation = Invitation::where('id', $id)->first();
-
         // Update invitation status
         $invitation->update([
+            'token' => null,
             'status' => 'geannuleerd'
         ]);
+
+        // Log the revocation
+        activity()
+            ->performedOn($invitation)
+            ->log('Uitnodiging geannuleerd voor ' . $invitation->email);
 
         return to_route('invitations.index');
     }
@@ -91,19 +99,25 @@ class InvitationController extends Controller
     /**
      * Resend an invitation
      */
-    public function resend($id)
+    public function resend(Invitation $invitation)
     {
-        // Retrieve invitation
-        $invitation = Invitation::where('id', $id)->first();
+        // Generate a new random token for the invitation
+        $token = Str::random(40);
 
         // Update invitation status
         $invitation->update([
+            'token' => $token,
             'status' => 'in afwachting',
             'sent_at' => now(),
         ]);
 
         // Send invitation email
         Mail::to($invitation->email)->send(new InvitationMail($invitation));
+
+        // Log the resend
+        activity()
+            ->performedOn($invitation)
+            ->log('Uitnodiging opnieuw verzonden naar ' . $invitation->email);
 
         return to_route('invitations.index');
     }

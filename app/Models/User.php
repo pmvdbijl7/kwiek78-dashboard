@@ -50,4 +50,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * A user can have one player.
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne<Player, User>
+     */
+    public function player()
+    {
+        return $this->hasOne(Player::class);
+    }
 }

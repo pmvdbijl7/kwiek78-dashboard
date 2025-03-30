@@ -1,25 +1,25 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Role } from '@/types';
+import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
-type DeleteDialogProps = {
-    role: Role;
+type UserDeleteDialogProps = {
+    user: User;
     open: boolean;
     close: () => void;
 };
 
-export default function DeleteDialog({ role, open, close }: DeleteDialogProps) {
+export default function UserDeleteDialog({ user, open, close }: UserDeleteDialogProps) {
     const { delete: destroy, processing } = useForm();
 
     const remove: FormEventHandler = (e) => {
         e.preventDefault();
-        destroy(route('roles.destroy', role.id), {
+        destroy(route('users.destroy', user.id), {
             onSuccess: () => {
-                toast.success(`De rol ${role.name} is verwijderd`);
+                toast.success(`${user.firstname} ${user.lastname} is verwijderd`);
                 close();
             },
         });
@@ -29,10 +29,13 @@ export default function DeleteDialog({ role, open, close }: DeleteDialogProps) {
         <Dialog open={open} onOpenChange={close}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Weet je zeker dat je de {role.name} rol wilt verwijderen?</DialogTitle>
+                    <DialogTitle>
+                        Weet je zeker dat je {user.firstname} {user.lastname} wilt verwijderen?
+                    </DialogTitle>
 
                     <DialogDescription>
-                        Als je deze rol verwijderd, zullen alle gebruikers die deze rol hebben, deze rol en rechten verliezen.
+                        Als je deze gebruiker verwijderd, zullen alle gegevens van deze gebruiker ook verwijderd worden. Dit kan niet ongedaan gemaakt
+                        worden.
                     </DialogDescription>
                 </DialogHeader>
 
@@ -43,7 +46,7 @@ export default function DeleteDialog({ role, open, close }: DeleteDialogProps) {
 
                     <Button variant="destructive" onClick={remove} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Rol verwijderen
+                        Verwijder
                     </Button>
                 </DialogFooter>
             </DialogContent>
