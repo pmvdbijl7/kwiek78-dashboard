@@ -27,11 +27,11 @@ export default function EditUser() {
         () => [
             {
                 title: 'Gebruikers',
-                href: '/users',
+                href: '/gebruikers',
             },
             {
                 title: `${user.firstname} ${user.lastname}`,
-                href: `/users/${user.slug}`,
+                href: `/gebruikers/${user.slug}`,
             },
         ],
         [user],

@@ -14,11 +14,11 @@ import RoleActions from './partials/role-actions';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Instellingen',
-        href: '/settings',
+        href: '/instellingen',
     },
     {
         title: 'Rollen',
-        href: '/settings/roles',
+        href: '/instellingen/rollen',
     },
 ];
 

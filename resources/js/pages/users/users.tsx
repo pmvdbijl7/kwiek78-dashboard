@@ -14,7 +14,7 @@ import { ColumnDef } from '@tanstack/react-table';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Gebruikers',
-        href: '/users',
+        href: '/gebruikers',
     },
 ];
 

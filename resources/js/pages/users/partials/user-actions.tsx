@@ -25,7 +25,7 @@ export default function UserActions({ user }: UserActionsProps) {
 
                 <DropdownMenuContent align="end" className="w-[160px]">
                     <DropdownMenuItem asChild>
-                        <Link href={`/users/${user.slug}`} prefetch>
+                        <Link href={`/gebruikers/${user.slug}`} prefetch>
                             Bewerk
                         </Link>
                     </DropdownMenuItem>

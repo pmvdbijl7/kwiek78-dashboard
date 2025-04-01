@@ -8,12 +8,12 @@ import { type PropsWithChildren } from 'react';
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Gebruikers',
-        url: '/users',
+        url: '/gebruikers',
         icon: null,
     },
     {
         title: 'Uitnodigingen',
-        url: '/users/invitations',
+        url: '/gebruikers/uitnodigingen',
         icon: null,
     },
 ];

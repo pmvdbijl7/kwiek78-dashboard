@@ -17,15 +17,15 @@ export default function EditRole() {
         () => [
             {
                 title: 'Instellingen',
-                href: '/settings',
+                href: '/instellingen',
             },
             {
                 title: 'Rollen',
-                href: '/settings/roles',
+                href: '/instellingen/rollen',
             },
             {
                 title: role.name,
-                href: `/settings/roles/${role.slug}`,
+                href: `/instellingen/rollen/${role.slug}`,
             },
         ],
         [role],

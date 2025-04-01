@@ -16,11 +16,11 @@ import { format } from 'date-fns';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Gebruikers',
-        href: '/users',
+        href: '/gebruikers',
     },
     {
         title: 'Uitnodigingen',
-        href: '/users/invitations',
+        href: '/gebruikers/uitnodigingen',
     },
 ];
 

@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Wachtwoord instellingen',
-        href: '/settings/password',
+        href: '/instellingen/wachtwoord',
     },
 ];
 

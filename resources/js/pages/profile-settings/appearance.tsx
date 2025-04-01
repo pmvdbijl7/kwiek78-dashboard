@@ -10,7 +10,7 @@ import ProfileSettingsLayout from '@/layouts/profile-settings/layout';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Thema instellingen',
-        href: '/settings/appearance',
+        href: '/instellingen/thema',
     },
 ];
 

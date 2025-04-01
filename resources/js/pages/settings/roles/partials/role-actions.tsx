@@ -25,7 +25,7 @@ export default function RoleActions({ role }: RoleActionsProps) {
 
                 <DropdownMenuContent align="end" className="w-[160px]">
                     <DropdownMenuItem asChild>
-                        <Link href={`/settings/roles/${role.slug}`} prefetch>
+                        <Link href={`/instellingen/rollen/${role.slug}`} prefetch>
                             Bewerk
                         </Link>
                     </DropdownMenuItem>
