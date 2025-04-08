@@ -101,13 +101,19 @@ const columns: ColumnDef<User>[] = [
     {
         accessorKey: 'last_activity',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Laatst actief" />,
-        cell: ({ cell }) => (
-            <>
-                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
-                <span> om </span>
-                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
-            </>
-        ),
+        cell: ({ cell }) => {
+            const lastActivity = cell.getValue() as string;
+
+            return lastActivity ? (
+                <>
+                    {formatInTimeZone(new Date(lastActivity), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
+                    <span> om </span>
+                    {formatInTimeZone(new Date(lastActivity), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
+                </>
+            ) : (
+                '-'
+            );
+        },
         meta: {
             title: 'Laatst actief',
         },
