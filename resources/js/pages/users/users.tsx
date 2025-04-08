@@ -4,12 +4,15 @@ import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { UserInfo } from '@/components/user-info';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
 import UserActions from '@/pages/users/partials/user-actions';
 import { User, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { formatInTimeZone } from 'date-fns-tz';
+import { nl } from 'date-fns/locale';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -41,26 +44,21 @@ const columns: ColumnDef<User>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'firstname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Voornaam" />,
-        meta: {
-            title: 'Voornaam',
+        accessorFn: (row) => `${row.firstname} ${row.lastname} ${row.email}`,
+        id: 'user_info',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Gebruiker" />,
+        cell: ({ cell }) => {
+            const user = cell.row.original as User;
+
+            return (
+                <div className="flex items-center space-x-2">
+                    <UserInfo user={user} showEmail />
+                </div>
+            );
         },
-    },
-    {
-        accessorKey: 'lastname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Achternaam" />,
         meta: {
-            title: 'Achternaam',
+            title: 'Gebruiker',
         },
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="E-mailadres" />,
-        meta: {
-            title: 'E-mailadres',
-        },
-        enableSorting: false,
     },
     {
         accessorKey: 'phone',
@@ -99,6 +97,28 @@ const columns: ColumnDef<User>[] = [
             return filterValues.some((value: string) => rowRoles.includes(value));
         },
         enableSorting: false,
+    },
+    {
+        accessorKey: 'last_activity',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Laatst actief" />,
+        cell: ({ cell }) => (
+            <>
+                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
+                <span> om </span>
+                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
+            </>
+        ),
+        meta: {
+            title: 'Laatst actief',
+        },
+    },
+    {
+        accessorKey: 'created_at',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Aangemaakt" />,
+        cell: ({ cell }) => formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl }),
+        meta: {
+            title: 'Aangemaakt',
+        },
     },
     {
         id: 'actions',

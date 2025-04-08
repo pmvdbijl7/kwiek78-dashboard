@@ -31,6 +31,8 @@ class Invitation extends Model
     {
         return [
             'roles' => 'array',
+            'sent_at' => 'datetime',
+            'accepted_at' => 'datetime',
         ];
     }
 }

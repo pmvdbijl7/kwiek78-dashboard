@@ -4,6 +4,7 @@ import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { UserInfo } from '@/components/user-info';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
 import InvitationActions from '@/pages/users/partials/invitation-actions';
@@ -11,7 +12,8 @@ import InviteDialog from '@/pages/users/partials/invite-dialog';
 import { BreadcrumbItem, Invitation } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz';
+import { nl } from 'date-fns/locale';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -47,26 +49,21 @@ const columns: ColumnDef<Invitation>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'firstname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Voornaam" />,
-        meta: {
-            title: 'Voornaam',
+        accessorFn: (row) => `${row.firstname} ${row.lastname} ${row.email}`,
+        id: 'user_info',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Gebruiker" />,
+        cell: ({ cell }) => {
+            const invitation = cell.row.original as Invitation;
+
+            return (
+                <div className="flex items-center space-x-2">
+                    <UserInfo user={invitation} showEmail />
+                </div>
+            );
         },
-    },
-    {
-        accessorKey: 'lastname',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Achternaam" />,
         meta: {
-            title: 'Achternaam',
+            title: 'Gebruiker',
         },
-    },
-    {
-        accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="E-mailadres" />,
-        meta: {
-            title: 'E-mailadres',
-        },
-        enableSorting: false,
     },
     {
         accessorFn: (row) => (row.roles as { name: string }[]).map((role) => role.name),
@@ -136,9 +133,9 @@ const columns: ColumnDef<Invitation>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Verstuurd" />,
         cell: ({ cell }) => (
             <>
-                {format(new Date(cell.getValue() as string), 'd MMMM, yyyy')}
-                <span> at </span>
-                {format(new Date(cell.getValue() as string), 'HH:mm')}
+                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
+                <span> om </span>
+                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
             </>
         ),
         meta: {

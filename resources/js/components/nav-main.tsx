@@ -23,7 +23,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+            <SidebarGroupLabel>Algemeen</SidebarGroupLabel>
 
             <SidebarMenu>
                 {visibleItems.map((item) => {

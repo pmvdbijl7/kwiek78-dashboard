@@ -21,7 +21,23 @@ class UserController extends Controller
         // Retrieve all users
         $users = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'Super Admin');
-        })->with('roles')->get();
+        })
+            ->with('roles')
+            ->get()
+            ->map(function ($user) {
+                // Retrieve the last activity timestamp from the sessions table
+                $lastActivity = \DB::table('sessions')
+                    ->where('user_id', $user->id)
+                    ->orderBy('last_activity', 'desc')
+                    ->value('last_activity');
+
+                // Convert the timestamp to ISO 8601 format and attach it to the user
+                $user->last_activity = $lastActivity
+                    ? \Carbon\Carbon::createFromTimestamp($lastActivity)->toISOString()
+                    : null;
+
+                return $user;
+            });
 
         // Return the Inertia response
         return Inertia::render('users/users', [
