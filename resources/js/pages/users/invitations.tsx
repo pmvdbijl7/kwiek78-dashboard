@@ -1,19 +1,21 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
 import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
+import { DateRangeFilter } from '@/components/date-range-filter';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { UserInfo } from '@/components/user-info';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
+import { formatDateTime } from '@/lib/utils';
 import InvitationActions from '@/pages/users/partials/invitation-actions';
 import InviteDialog from '@/pages/users/partials/invite-dialog';
 import { BreadcrumbItem, Invitation } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { formatInTimeZone } from 'date-fns-tz';
-import { nl } from 'date-fns/locale';
+import { endOfDay, startOfDay } from 'date-fns';
+import { DateRange } from 'react-day-picker';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -133,11 +135,20 @@ const columns: ColumnDef<Invitation>[] = [
         header: ({ column }) => <DataTableColumnHeader column={column} title="Verstuurd" />,
         cell: ({ cell }) => (
             <>
-                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
+                {formatDateTime(cell.getValue() as string, 'd MMMM yyyy')}
                 <span> om </span>
-                {formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
+                {formatDateTime(cell.getValue() as string, 'HH:mm')}
             </>
         ),
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue?.from || !filterValue?.to) return true;
+
+            const rowDate = new Date(row.getValue(columnId));
+            const from = startOfDay(new Date(filterValue.from));
+            const to = endOfDay(new Date(filterValue.to));
+
+            return rowDate >= from && rowDate <= to;
+        },
         meta: {
             title: 'Verstuurd',
         },
@@ -160,20 +171,31 @@ export default function Invitations() {
                     <DataTable
                         columns={columns}
                         data={invitations}
-                        filters={(table) => (
-                            <>
-                                <Input
-                                    placeholder="Zoek uitnodigingen..."
-                                    value={table.getState().globalFilter ?? ''}
-                                    onChange={(e) => table.setGlobalFilter(e.target.value)}
-                                    className="h-8 w-full lg:w-[250px]"
-                                />
+                        filters={(table) => {
+                            const dateColumn = table.getColumn('sent_at');
+                            const dateValue = dateColumn?.getFilterValue() as DateRange | undefined;
 
-                                <DataTableFacetedFilter column={table.getColumn('roles')!} title="Rol" />
+                            return (
+                                <>
+                                    <Input
+                                        placeholder="Zoek uitnodigingen..."
+                                        value={table.getState().globalFilter ?? ''}
+                                        onChange={(e) => table.setGlobalFilter(e.target.value)}
+                                        className="h-8 w-full lg:w-[250px]"
+                                    />
 
-                                <DataTableFacetedFilter column={table.getColumn('status')!} title="Status" />
-                            </>
-                        )}
+                                    <DataTableFacetedFilter column={table.getColumn('roles')!} title="Rol" />
+
+                                    <DataTableFacetedFilter column={table.getColumn('status')!} title="Status" />
+
+                                    <DateRangeFilter
+                                        title="Verstuurd tussen"
+                                        value={dateValue}
+                                        onChange={(range) => dateColumn?.setFilterValue(range)}
+                                    />
+                                </>
+                            );
+                        }}
                         actions={
                             <>
                                 <InviteDialog />

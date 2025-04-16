@@ -7,12 +7,11 @@ import { Input } from '@/components/ui/input';
 import { UserInfo } from '@/components/user-info';
 import AppLayout from '@/layouts/app-layout';
 import UsersLayout from '@/layouts/users/layout';
+import { formatDateTime } from '@/lib/utils';
 import UserActions from '@/pages/users/partials/user-actions';
 import { User, type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
-import { formatInTimeZone } from 'date-fns-tz';
-import { nl } from 'date-fns/locale';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -106,9 +105,9 @@ const columns: ColumnDef<User>[] = [
 
             return lastActivity ? (
                 <>
-                    {formatInTimeZone(new Date(lastActivity), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl })}
+                    {formatDateTime(lastActivity, 'd MMMM yyyy')}
                     <span> om </span>
-                    {formatInTimeZone(new Date(lastActivity), 'Europe/Amsterdam', 'HH:mm', { locale: nl })}
+                    {formatDateTime(lastActivity, 'HH:mm')}
                 </>
             ) : (
                 '-'
@@ -121,7 +120,7 @@ const columns: ColumnDef<User>[] = [
     {
         accessorKey: 'created_at',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Aangemaakt" />,
-        cell: ({ cell }) => formatInTimeZone(new Date(cell.getValue() as string), 'Europe/Amsterdam', 'd MMMM yyyy', { locale: nl }),
+        cell: ({ cell }) => formatDateTime(cell.getValue() as string, 'd MMMM yyyy'),
         meta: {
             title: 'Aangemaakt',
         },

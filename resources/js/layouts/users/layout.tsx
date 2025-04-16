@@ -27,7 +27,7 @@ export default function UsersLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="mx-auto w-full max-w-6xl px-4 py-6">
+        <div className="mx-auto w-full px-4 py-6">
             <Heading title="Gebruikers" description="Beheer alle gebruikers die toegang hebben tot dit dashboard." />
 
             <div className="flex flex-col space-y-6">
