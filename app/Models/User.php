@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,11 +21,9 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'person_data_id',
         'slug',
-        'firstname',
-        'lastname',
         'email',
-        'phone',
         'password',
     ];
 
@@ -52,7 +51,16 @@ class User extends Authenticatable
     }
 
     /**
-     * A user can have one player.
+     * A user can have one person data.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<PersonData, User>
+     */
+    public function personData()
+    {
+        return $this->belongsTo(PersonData::class);
+    }
+
+    /**
+     * A user belongs to a player.
      * @return \Illuminate\Database\Eloquent\Relations\HasOne<Player, User>
      */
     public function player()

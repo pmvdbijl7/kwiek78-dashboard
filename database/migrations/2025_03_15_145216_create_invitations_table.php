@@ -12,9 +12,7 @@ return new class extends Migration {
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('email')->unique();
+            $table->foreignId('person_data_id')->nullable()->constrained('person_data')->onUpdate('cascade')->onDelete('set null');
             $table->string('token')->unique()->nullable();
             $table->json('roles')->nullable();
             $table->enum('status', ['in afwachting', 'geaccepteerd', 'geannuleerd', 'verlopen', 'mislukt'])->default('in afwachting');

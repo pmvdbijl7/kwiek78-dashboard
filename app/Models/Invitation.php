@@ -12,9 +12,7 @@ class Invitation extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'email',
+        'person_data_id',
         'token',
         'roles',
         'status',
@@ -34,5 +32,14 @@ class Invitation extends Model
             'sent_at' => 'datetime',
             'accepted_at' => 'datetime',
         ];
+    }
+
+    /**
+     * An invvitation has one person data.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<PersonData, Invitation>
+     */
+    public function personData()
+    {
+        return $this->belongsTo(PersonData::class);
     }
 }

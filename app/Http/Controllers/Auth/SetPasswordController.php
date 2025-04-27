@@ -57,17 +57,11 @@ class SetPasswordController extends Controller
             return back()->with('error', 'This invitation is no longer valid.');
         }
 
-        // Get full name and create slug
-        $fullName = $invitation->firstname . ' ' . $invitation->lastname;
-        $baseSlug = Str::slug($fullName);
-        $slug = $this->generateUniqueSlug($baseSlug);
-
         // Create new user
         $user = User::create([
-            'slug' => $slug,
-            'firstname' => $invitation->firstname,
-            'lastname' => $invitation->lastname,
-            'email' => $invitation->email,
+            'person_data_id' => $invitation->person_data_id,
+            'slug' => $invitation->personData->slug,
+            'email' => $invitation->personData->email,
             'password' => Hash::make($request->password),
         ]);
 
@@ -96,21 +90,5 @@ class SetPasswordController extends Controller
 
         // Redirect to dashboard page
         return to_route('dashboard');
-    }
-
-    /**
-     * Generate a unique slug by checking if it already exists
-     */
-    private function generateUniqueSlug(string $baseSlug): string
-    {
-        $slug = $baseSlug;
-        $count = 2;
-
-        while (User::where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $count;
-            $count++;
-        }
-
-        return $slug;
     }
 }

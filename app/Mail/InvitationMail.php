@@ -42,7 +42,7 @@ class InvitationMail extends Mailable
             view: 'emails.invitation',
             with: [
                 'invitationLink' => url('/wachtwoord-instellen/' . $this->invitation->token),
-                'email' => $this->invitation->email,
+                'email' => $this->invitation->personData->email,
             ],
         );
     }

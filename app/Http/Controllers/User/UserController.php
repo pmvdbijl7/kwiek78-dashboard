@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\Invitation;
+use App\Models\PersonData;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -22,7 +24,7 @@ class UserController extends Controller
         $users = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'Super Admin');
         })
-            ->with('roles')
+            ->with(['roles', 'personData'])
             ->get()
             ->map(function ($user) {
                 // Retrieve the last activity timestamp from the sessions table
@@ -41,7 +43,7 @@ class UserController extends Controller
 
         // Return the Inertia response
         return Inertia::render('users/users', [
-            'users' => $users
+            'users' => UserResource::collection($users),
         ]);
     }
 
@@ -54,7 +56,7 @@ class UserController extends Controller
         $roles = Role::whereNot('name', 'Super Admin')->get();
 
         return Inertia::render('users/edit', [
-            'user' => $user,
+            'user' => new UserResource($user->load('personData')),
             'userRoles' => $user->roles,
             'roles' => $roles,
         ]);
@@ -76,15 +78,21 @@ class UserController extends Controller
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($user->id),
-                Rule::unique(Invitation::class)->ignore($user->email, 'email'),
+                Rule::unique(PersonData::class)->ignore($user->personData->email, 'email'),
             ],
             'roles' => 'required|array',
         ]);
 
-        // Update the user
-        $user->update([
+        // Update the person data
+        $user->personData->update([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
+            'email' => $request->email,
+        ]);
+
+        // Update the user
+        $user->update([
+            'slug' => $user->personData->slug,
             'email' => $request->email,
         ]);
 

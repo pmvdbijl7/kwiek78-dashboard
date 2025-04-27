@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\InviteRequest;
+use App\Http\Resources\InvitationResource;
 use App\Mail\InvitationMail;
 use App\Models\Invitation;
+use App\Models\PersonData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -31,7 +33,12 @@ class InvitationController extends Controller
         END";
 
         // Retrieve all invitations
-        $invitations = Invitation::orderByRaw($statusOrder)->orderBy('sent_at', 'desc')->get();
+        $invitations = InvitationResource::collection(
+            Invitation::with('personData')
+                ->orderByRaw($statusOrder)
+                ->orderBy('sent_at', 'desc')
+                ->get()
+        );
 
         // Retrieve all roles
         $roles = Role::whereNot('name', 'Super Admin')->get();
@@ -54,11 +61,16 @@ class InvitationController extends Controller
         // Retrieve the roles with IDs and names
         $roles = Role::whereIn('id', $request->roles)->get(['id', 'name']);
 
-        // Create a new invitation
-        $invitation = Invitation::create([
+        // Create person data
+        $personData = PersonData::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
+        ]);
+
+        // Create a new invitation
+        $invitation = Invitation::create([
+            'person_data_id' => $personData->id,
             'token' => $token,
             'roles' => $roles,
             'status' => 'in afwachting',
@@ -66,12 +78,12 @@ class InvitationController extends Controller
         ]);
 
         // Send invitation email
-        Mail::to($request->email)->send(new InvitationMail($invitation));
+        Mail::to($personData->email)->send(new InvitationMail($invitation));
 
         // Log the invitation
         activity()
             ->performedOn($invitation)
-            ->log('Uitnodiging verzonden naar ' . $request->email);
+            ->log('Uitnodiging verzonden naar ' . $personData->email);
 
         // Return response
         return to_route('invitations.index');
@@ -91,7 +103,7 @@ class InvitationController extends Controller
         // Log the revocation
         activity()
             ->performedOn($invitation)
-            ->log('Uitnodiging geannuleerd voor ' . $invitation->email);
+            ->log('Uitnodiging geannuleerd voor ' . $invitation->personData->email);
 
         return to_route('invitations.index');
     }
@@ -112,12 +124,12 @@ class InvitationController extends Controller
         ]);
 
         // Send invitation email
-        Mail::to($invitation->email)->send(new InvitationMail($invitation));
+        Mail::to($invitation->personData->email)->send(new InvitationMail($invitation));
 
         // Log the resend
         activity()
             ->performedOn($invitation)
-            ->log('Uitnodiging opnieuw verzonden naar ' . $invitation->email);
+            ->log('Uitnodiging opnieuw verzonden naar ' . $invitation->personData->email);
 
         return to_route('invitations.index');
     }

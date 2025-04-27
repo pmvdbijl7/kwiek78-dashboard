@@ -47,12 +47,24 @@ export interface Role {
 
 export interface User {
     id: number;
+    gender?: string;
+    initials?: string;
     firstname: string;
     lastname: string;
+    date_of_birth?: string;
+    nationality?: string;
+    zip_code?: string;
+    house_number?: string;
+    street?: string;
+    city?: string;
+    country?: string;
     email: string;
-    avatar?: string;
     email_verified_at: string | null;
+    avatar?: string;
     phone?: string;
+    iban?: string;
+    bank_account_holder?: string;
+    volunteer_roles?: [];
     roles: Role[];
     created_at: string;
     updated_at: string;

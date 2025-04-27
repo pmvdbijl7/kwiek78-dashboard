@@ -16,10 +16,14 @@ class RoleSeeder extends Seeder
         // Define roles
         $roles = [
             'Admin',
-            'President',
-            'Secretary',
-            'Treasurer',
-            'Member',
+            'Voorzitter',
+            'Secretaris',
+            'Penningmeester',
+            'Coach',
+            'Trainer',
+            'Aanvoerder',
+            'Speler',
+            'Ouder',
         ];
 
         // Create roles

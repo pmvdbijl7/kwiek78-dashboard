@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\User;
 
-use App\Models\Invitation;
+use App\Models\PersonData;
 use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,7 +35,7 @@ class InviteRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class),
-                Rule::unique(Invitation::class),
+                Rule::unique(PersonData::class),
             ],
             'roles' => [
                 'required',

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\PersonData;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,15 +16,22 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create Super Admin role
-        $adminRole = Role::create(['slug' => 'super-admin', 'name' => 'Super Admin']);
+        $adminRole = Role::firstOrCreate(['slug' => 'super-admin', 'name' => 'Super Admin']);
 
-        // Create super admin user
-        $adminUser = User::create([
+        // Create person data
+        $personData = PersonData::firstOrCreate([
             'slug' => 'patrick-van-der-bijl',
             'firstname' => 'Patrick',
             'lastname' => 'van der Bijl',
             'email' => 'pmvdbijl7@gmail.com',
             'phone' => '+31615220551',
+        ]);
+
+        // Create super admin user
+        $adminUser = User::firstOrCreate([
+            'person_data_id' => $personData->id,
+            'slug' => $personData->slug,
+            'email' => $personData->email,
             'password' => bcrypt('pmvdbijl7'),
         ]);
 

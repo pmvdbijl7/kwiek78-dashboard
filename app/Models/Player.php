@@ -13,16 +13,7 @@ class Player extends Model
      */
     protected $fillable = [
         'user_id',
-        'slug',
-        'firstname',
-        'lastname',
-        'gender',
-        'date_of_birth',
-        'street',
-        'house_number',
-        'postal_code',
-        'city',
-        'country',
+        'person_data_id',
         'position',
         'shirt_number',
         'foot',
@@ -37,5 +28,14 @@ class Player extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * A player has one person data.
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<PersonData, Player>
+     */
+    public function personData()
+    {
+        return $this->belongsTo(PersonData::class);
     }
 }
