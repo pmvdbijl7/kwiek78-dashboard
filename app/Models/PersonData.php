@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\HasSlug;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PersonData extends Model
 {
-    use HasSlug;
+    use HasFactory, HasSlug;
 
     protected array $slugSourceFields = [
         'firstname',
