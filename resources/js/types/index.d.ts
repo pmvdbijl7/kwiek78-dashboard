@@ -41,8 +41,9 @@ export interface Permission {
 
 export interface Role {
     id: number;
-    name: string;
     slug: string;
+    name: string;
+    deletable: boolean;
 }
 
 export interface User {

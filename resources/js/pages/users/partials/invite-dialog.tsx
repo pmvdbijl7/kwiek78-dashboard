@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Role } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
@@ -135,18 +136,23 @@ export default function InviteDialog() {
                                     </DropdownMenuTrigger>
 
                                     <DropdownMenuContent align="start">
-                                        {roles.map((role) => (
-                                            <DropdownMenuCheckboxItem
-                                                key={role.id}
-                                                checked={data.roles.includes(role.id)}
-                                                onCheckedChange={(checked) => {
-                                                    setData('roles', checked ? [...data.roles, role.id] : data.roles.filter((r) => r !== role.id));
-                                                }}
-                                                onSelect={(e) => e.preventDefault()}
-                                            >
-                                                {role.name}
-                                            </DropdownMenuCheckboxItem>
-                                        ))}
+                                        <ScrollArea className="h-72 pr-4">
+                                            {roles.map((role) => (
+                                                <DropdownMenuCheckboxItem
+                                                    key={role.id}
+                                                    checked={data.roles.includes(role.id)}
+                                                    onCheckedChange={(checked) => {
+                                                        setData(
+                                                            'roles',
+                                                            checked ? [...data.roles, role.id] : data.roles.filter((r) => r !== role.id),
+                                                        );
+                                                    }}
+                                                    onSelect={(e) => e.preventDefault()}
+                                                >
+                                                    {role.name}
+                                                </DropdownMenuCheckboxItem>
+                                            ))}
+                                        </ScrollArea>
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>

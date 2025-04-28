@@ -18,6 +18,9 @@ export default function DeleteDialog({ role, open, close }: DeleteDialogProps) {
     const remove: FormEventHandler = (e) => {
         e.preventDefault();
         destroy(route('roles.destroy', role.id), {
+            onError: (errors) => {
+                toast.error(errors.error);
+            },
             onSuccess: () => {
                 toast.success(`De rol ${role.name} is verwijderd`);
                 close();

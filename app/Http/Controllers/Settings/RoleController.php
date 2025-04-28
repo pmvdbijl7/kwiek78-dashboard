@@ -34,14 +34,9 @@ class RoleController extends Controller
      */
     public function store(RoleCreateRequest $request)
     {
-        // Generate a slug
-        $baseSlug = Str::slug($request->name);
-        $slug = $this->generateUniqueSlug($baseSlug);
-
         // Create new role
         $role = Role::create([
             'name' => $request->name,
-            'slug' => $slug,
         ]);
 
         return to_route('roles.edit', $role->slug);
@@ -102,25 +97,14 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        // Check if the role is deletable
+        if (!$role->deletable) {
+            return back()->withErrors(['error' => 'This role cannot be deleted']);
+        }
+
         // Delete the role
         $role->delete();
 
         return to_route('roles.index');
-    }
-
-    /**
-     * Generate a unique slug by checking if it already exists
-     */
-    private function generateUniqueSlug(string $baseSlug): string
-    {
-        $slug = $baseSlug;
-        $count = 2;
-
-        while (Role::where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $count;
-            $count++;
-        }
-
-        return $slug;
     }
 }

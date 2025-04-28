@@ -45,7 +45,7 @@ export function DataTable<TData>({ columns, data, filters, actions }: DataTableP
         state: { sorting, globalFilter, columnVisibility, rowSelection, columnFilters },
         initialState: {
             pagination: {
-                pageSize: 10,
+                pageSize: 20,
             },
         },
         enableRowSelection: true,

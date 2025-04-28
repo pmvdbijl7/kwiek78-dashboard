@@ -30,11 +30,15 @@ export default function RoleActions({ role }: RoleActionsProps) {
                         </Link>
                     </DropdownMenuItem>
 
-                    <DropdownMenuSeparator />
+                    {Boolean(role.deletable) && (
+                        <>
+                            <DropdownMenuSeparator />
 
-                    <DropdownMenuItem className="!text-red-500" onClick={() => setDeleteDialogOpen(true)}>
-                        Verwijder
-                    </DropdownMenuItem>
+                            <DropdownMenuItem className="!text-red-500" onClick={() => setDeleteDialogOpen(true)}>
+                                Verwijder
+                            </DropdownMenuItem>
+                        </>
+                    )}
                 </DropdownMenuContent>
             </DropdownMenu>
 
