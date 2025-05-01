@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user() ? new UserResource($request->user()->load('personData')) : null,
                 'permissions' => $request->user()?->getAllPermissions()->pluck('name'),
+                'notifications' => $request->user()?->unreadNotifications()->count(),
             ],
             'ziggy' => fn(): array => [
                 ...(new Ziggy)->toArray(),

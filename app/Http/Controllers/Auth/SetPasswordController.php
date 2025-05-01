@@ -78,6 +78,7 @@ class SetPasswordController extends Controller
 
         // Update invitation status
         $invitation->update([
+            'token' => null,
             'status' => 'geaccepteerd',
             'accepted_at' => now(),
         ]);

@@ -13,6 +13,6 @@ class RegistrationSeeder extends Seeder
      */
     public function run(): void
     {
-        Registration::factory(2)->create();
+        Registration::factory(1)->create();
     }
 }

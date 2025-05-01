@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\NewRegistrationNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,5 +33,23 @@ class Registration extends Model
     public function personData()
     {
         return $this->belongsTo(PersonData::class);
+    }
+
+    /**
+     * Boot the model and set up event listeners.
+     * @return void
+     */
+    protected static function booted()
+    {
+        // Listen for the "created" event on the Registration model
+        static::created(function ($registration) {
+            // Retrieve all "Ledenadministrateur" users
+            $users = User::whereHas('roles', fn ($query) => $query->where('name', 'Ledenadministrateur'))->get();
+
+            // Send notification to each user
+            foreach ($users as $user) {
+                $user->notify(new NewRegistrationNotification($registration));
+            }
+        });
     }
 }
