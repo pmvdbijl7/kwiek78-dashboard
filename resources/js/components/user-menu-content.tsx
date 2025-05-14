@@ -34,7 +34,7 @@ export function UserMenuContent({ user, notifications }: UserMenuContentProps) {
                     <Link className="flex w-full justify-between" href={route('notifications.index')} as="button" prefetch onClick={cleanup}>
                         <div className="flex items-center gap-2">
                             <Bell />
-                            Notificaties
+                            Meldingen
                         </div>
                         {notifications > 0 && <Badge variant="destructive">{notifications > 9 ? '9+' : notifications}</Badge>}
                     </Link>

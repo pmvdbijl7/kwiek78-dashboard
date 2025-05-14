@@ -73,6 +73,45 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+export interface Notification {
+    id: number;
+    type: string;
+    message: string;
+    url: string;
+    read_at: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Registration {
+    id: number;
+    gender: string;
+    initials: string;
+    firstname: string;
+    lastname: string;
+    date_of_birth: string;
+    nationality: string;
+    zip_code: string;
+    house_number: string;
+    street: string;
+    city: string;
+    country: string;
+    email: string;
+    phone: string;
+    iban: string;
+    bank_account_holder: string;
+    volunteer_roles: [];
+    membership_type: string;
+    has_knvb_affiliation: boolean;
+    club_name: string;
+    membership_end: string;
+    knvb_relation_number: string;
+    comments: string;
+    status: string;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Invitation {
     id: number;
     firstname: string;

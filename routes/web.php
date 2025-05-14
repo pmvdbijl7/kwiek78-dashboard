@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RegistrationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,7 +15,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('notificaties', [NotificationController::class, 'index'])->middleware(['auth'])->name('notifications.index');
+Route::get('meldingen', [NotificationController::class, 'index'])->middleware(['auth'])->name('notifications.index');
+Route::patch('meldingen/{notification:id}/mark-as-read', [NotificationController::class, 'markAsRead'])->middleware(['auth'])->name('notification.markAsRead');
+Route::patch('meldingen/{notification:id}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->middleware(['auth'])->name('notification.markAsUnread');
+Route::patch('meldingen/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->middleware(['auth'])->name('notifications.markAllAsRead');
+Route::patch('meldingen/mark-all-as-unread', [NotificationController::class, 'markAllAsUnread'])->middleware(['auth'])->name('notifications.markAllAsUnread');
+
+Route::get('aanmeldingen', [RegistrationController::class, 'index'])->middleware(['auth'])->name('registrations.index');
+Route::get('aanmeldingen/{registration:id}', [RegistrationController::class, 'show'])->middleware(['auth'])->name('registrations.show');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/users.php';

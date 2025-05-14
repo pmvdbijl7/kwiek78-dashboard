@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('registrations', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignId('person_data_id')->nullable()->constrained('person_data')->onUpdate('cascade')->onDelete('set null');
             $table->enum('membership_type', ['field', 'futsal', 'non_playing', 'member']);
             $table->boolean('has_knvb_affiliation')->default(false);

@@ -17,9 +17,12 @@ export function NavUser() {
             <SidebarMenuItem>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton size="lg" className="text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent group">
+                        <SidebarMenuButton
+                            size="lg"
+                            className="text-sidebar-accent-foreground data-[state=open]:bg-sidebar-accent group overflow-visible"
+                        >
                             <UserInfo user={user} notifications={notifications} showEmail />
-                            <ChevronsUpDown className="ml-auto size-4" />
+                            {(state !== 'collapsed' || isMobile) && <ChevronsUpDown className="ml-auto size-4" />}
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent

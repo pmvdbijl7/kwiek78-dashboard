@@ -53,10 +53,9 @@ class NewRegistrationNotification extends Notification
     public function toDatabase(object $notifiable): DatabaseMessage
     {
         return new DatabaseMessage([
-            'registration_id' => $this->registration->id,
-            'person_name' => $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname,
-            'membership_type' => $this->registration->membership_type,
+            'type' => 'Nieuwe aanmelding',
             'message' => 'Nieuwe aanmelding ontvangen van ' . $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname . '.',
+            'url' => route('registrations.show', $this->registration->id),
         ]);
     }
 

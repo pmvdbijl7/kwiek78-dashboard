@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Notifications\NewRegistrationNotification;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Registration extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     /**
      * The attributes that are mass assignable.

@@ -1,21 +1,24 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
+import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { DateRangeFilter } from '@/components/date-range-filter';
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import AppLayout from '@/layouts/app-layout';
 import NotificationsLayout from '@/layouts/notifications/layout';
 import { formatDateTime } from '@/lib/utils';
-import { BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { BreadcrumbItem, Notification } from '@/types';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { endOfDay, startOfDay } from 'date-fns';
-import { useEffect } from 'react';
 import { DateRange } from 'react-day-picker';
+import { toast } from 'sonner';
+import NotificationActions from './partials/notification-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Notificaties',
-        href: '/notificaties',
+        title: 'Meldingen',
+        href: '/meldingen',
     },
 ];
 
@@ -42,8 +45,19 @@ const columns: ColumnDef<Notification>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'data.message',
+        accessorKey: 'message',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Melding" />,
+        cell: ({ cell }) => {
+            const message = cell.getValue() as string;
+            const isRead = cell.row.original.read_at !== null;
+
+            return (
+                <div className="flex items-center gap-1.5">
+                    {!isRead && <span className="h-2 w-2 rounded-full bg-red-500"></span>}
+                    <span className={`${!isRead && 'font-bold'}`}>{message}</span>
+                </div>
+            );
+        },
         meta: {
             title: 'Melding',
         },
@@ -76,34 +90,64 @@ const columns: ColumnDef<Notification>[] = [
             title: 'Datum en tijd',
         },
     },
+    {
+        accessorKey: 'type',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+        filterFn: (row, columnId, filterValues) => {
+            if (!filterValues || filterValues.length === 0) return true;
+            return filterValues.includes(row.getValue(columnId));
+        },
+        meta: {
+            title: 'Type',
+        },
+        enableSorting: false,
+        enableHiding: true,
+    },
+    {
+        id: 'actions',
+        cell: ({ row }) => <NotificationActions notification={row.original} />,
+    },
 ];
 
 export default function Notifications() {
     const { notifications } = usePage().props as unknown as { notifications: Notification[] };
+    const { patch, processing } = useForm();
 
-    useEffect(() => {
-        console.log(notifications);
-    }, [notifications]);
+    const markAllAsRead = () => {
+        patch(route('notifications.markAllAsRead'), {
+            onSuccess: () => {
+                toast.success('Alle meldingen gemarkeerd als gelezen');
+            },
+        });
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Notificaties" />
+            <Head title="Meldingen" />
 
             <NotificationsLayout>
                 <div className="space-y-6">
                     <DataTable
                         columns={columns}
                         data={notifications}
+                        rowUrl={(row) => row.original.url}
                         filters={(table) => {
                             const dateColumn = table.getColumn('created_at');
                             const dateValue = dateColumn?.getFilterValue() as DateRange | undefined;
 
                             return (
                                 <>
+                                    <DataTableFacetedFilter column={table.getColumn('type')} title="Type" />
+
                                     <DateRangeFilter title="Datum" value={dateValue} onChange={(range) => dateColumn?.setFilterValue(range)} />
                                 </>
                             );
                         }}
+                        actions={
+                            <Button size="sm" className="h-8" onClick={markAllAsRead}>
+                                Markeer alles als gelezen
+                            </Button>
+                        }
                     />
                 </div>
             </NotificationsLayout>
