@@ -17,7 +17,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from '@tanstack/react-table';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { DataTablePagination } from './data-table-pagination';
 import { DataTableToolbar } from './data-table-toolbar';
 
@@ -31,18 +31,17 @@ interface DataTableProps<TData> {
     columns: ColumnDef<TData>[];
     data: TData[];
     rowUrl?: (row: Row<TData>) => string | undefined;
+    onRowClick?: (row: Row<TData>, event: React.MouseEvent) => void;
     filters?: (table: TanstackTable<TData>) => React.ReactNode;
     actions?: React.ReactNode;
 }
 
-export function DataTable<TData>({ columns, data, rowUrl, filters, actions }: DataTableProps<TData>) {
+export function DataTable<TData>({ columns, data, rowUrl, onRowClick, filters, actions }: DataTableProps<TData>) {
     const [globalFilter, setGlobalFilter] = useState('');
     const [rowSelection, setRowSelection] = useState({});
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [sorting, setSorting] = useState<SortingState>([]);
-
-    const prefetched = useRef<Set<string>>(new Set());
 
     const table = useReactTable({
         data,
@@ -96,11 +95,13 @@ export function DataTable<TData>({ columns, data, rowUrl, filters, actions }: Da
                                         data-state={row.getIsSelected() && 'selected'}
                                         className={`group/row ${isClickable && 'cursor-pointer'}`}
                                         onClick={(e) => {
-                                            if (!isClickable) return;
-
                                             if ((e.target as HTMLElement).closest('button, input, a, div[role=menuitem]')) return;
 
-                                            router.visit(url!);
+                                            onRowClick?.(row, e);
+
+                                            if (isClickable) {
+                                                router.visit(url!);
+                                            }
                                         }}
                                     >
                                         {row.getVisibleCells().map((cell) => (

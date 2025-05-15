@@ -131,6 +131,13 @@ export default function Notifications() {
                         columns={columns}
                         data={notifications}
                         rowUrl={(row) => row.original.url}
+                        onRowClick={(row, event) => {
+                            const notification = row.original;
+
+                            if (!notification.read_at) {
+                                patch(route('notification.markAsRead', { id: notification.id }));
+                            }
+                        }}
                         filters={(table) => {
                             const dateColumn = table.getColumn('created_at');
                             const dateValue = dateColumn?.getFilterValue() as DateRange | undefined;
