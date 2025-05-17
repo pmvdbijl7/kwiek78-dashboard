@@ -19,7 +19,7 @@ class PersonDataFactory extends Factory
         $firstname = fake()->firstName();
 
         return [
-            'gender' => fake()->randomElement(['male', 'female', 'other']),
+            'gender' => fake()->randomElement(['man', 'vrouw', 'anders']),
             'initials' => strtoupper(
                 substr($firstname, 0, 1) . 
                 implode('', array_map(fn () => fake()->randomLetter(), range(1, rand(1, 2))))

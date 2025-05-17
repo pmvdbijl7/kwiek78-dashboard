@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RegistrationResource;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -15,7 +16,7 @@ class RegistrationController extends Controller
 
         // Return the Inertia response with registrations
         return Inertia::render('registrations/registrations', [
-            'registrations' => $registrations,
+            'registrations' => RegistrationResource::collection($registrations),
         ]);
     }
 

@@ -21,13 +21,13 @@ class RegistrationFactory extends Factory
 
         return [
             'person_data_id' => PersonData::factory(),
-            'membership_type' => fake()->randomElement(['field', 'futsal', 'non_playing', 'member']),
+            'membership_type' => fake()->randomElement(['veld', 'zaal', 'niet spelend', 'lid']),
             'has_knvb_affiliation' => $hasKnvbAffiliation,
             'club_name' => $hasKnvbAffiliation ? fake()->company() : null,
             'membership_end' => $hasKnvbAffiliation ? fake()->dateTimeBetween('tomorrow', '+1 year')->format('Y-m-d') : null,
             'knvb_relation_number' => $hasKnvbAffiliation ? fake()->randomNumber(8, true) : null,
             'comments' => fake()->text(),
-            'status' => 'pending',
+            'status' => 'in afwachting',
         ];
     }
 }

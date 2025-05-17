@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('person_data', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            $table->enum('gender', ['man', 'vrouw', 'anders'])->nullable();
             $table->string('initials')->nullable();
             $table->string('firstname');
             $table->string('lastname');

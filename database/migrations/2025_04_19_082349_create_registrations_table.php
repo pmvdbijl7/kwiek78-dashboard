@@ -13,13 +13,13 @@ return new class extends Migration {
         Schema::create('registrations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignId('person_data_id')->nullable()->constrained('person_data')->onUpdate('cascade')->onDelete('set null');
-            $table->enum('membership_type', ['field', 'futsal', 'non_playing', 'member']);
+            $table->enum('membership_type', ['veld', 'zaal', 'niet spelend', 'lid']);
             $table->boolean('has_knvb_affiliation')->default(false);
             $table->string('club_name')->nullable();
             $table->string('membership_end')->nullable();
             $table->string('knvb_relation_number')->nullable();
             $table->text('comments')->nullable();
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->enum('status', ['in afwachting', 'geaccepteerd', 'afgewezen'])->default('in afwachting');
             $table->timestamps();
         });
     }

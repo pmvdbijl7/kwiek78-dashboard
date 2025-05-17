@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { IdCard, LayoutGrid, LifeBuoy, Send, Settings, Users } from 'lucide-react';
+import { FileUser, IdCard, LayoutGrid, LifeBuoy, Send, Settings, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -27,6 +27,12 @@ const mainNavItems: NavItem[] = [
         title: 'Spelers',
         url: '/spelers',
         icon: IdCard,
+    },
+    {
+        title: 'Aanmeldingen',
+        url: '/aanmeldingen',
+        icon: FileUser,
+        permission: 'view registrations',
     },
     {
         title: 'Gebruikers',
