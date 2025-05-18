@@ -76,6 +76,14 @@ export default function Permissions() {
                 allPermissions={permissions}
             />
 
+            <PermissionsGroup
+                title="Aanmeldingen"
+                permissions={['view registrations', 'accept registrations', 'reject registrations']}
+                selectedPermissions={selectedPermissions}
+                togglePermission={togglePermission}
+                allPermissions={permissions}
+            />
+
             <Button onClick={submit} disabled={processing}>
                 {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                 Opslaan

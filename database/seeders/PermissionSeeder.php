@@ -30,6 +30,8 @@ class PermissionSeeder extends Seeder
             'edit roles' => 'Wijzig rolrechten en details.',
             'delete roles' => 'Verwijder rollen uit het systeem.',
             'view registrations' => 'Bekijk de lijst met aanmeldingen.',
+            'accept registrations' => 'Accepteer nieuwe aanmeldingen.',
+            'reject registrations' => 'Weiger nieuwe aanmeldingen.',
         ];
 
         // Create permissions with descriptions

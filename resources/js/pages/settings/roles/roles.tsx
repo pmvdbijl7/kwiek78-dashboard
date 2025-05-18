@@ -78,6 +78,7 @@ export default function Roles() {
                     <DataTable
                         columns={columns}
                         data={roles}
+                        rowUrl={(row) => route('roles.edit', row.original)}
                         filters={(table) => (
                             <>
                                 <Input

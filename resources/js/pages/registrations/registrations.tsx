@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/data-table';
 import { DataTableColumnHeader } from '@/components/data-table-column-header';
+import { DataTableFacetedFilter } from '@/components/data-table-faceted-filter';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
@@ -9,6 +10,9 @@ import { formatDateTime } from '@/lib/utils';
 import { BreadcrumbItem, Registration } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
+import { endOfDay, startOfDay } from 'date-fns';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -42,7 +46,15 @@ const columns: ColumnDef<Registration>[] = [
     {
         accessorKey: 'membership_type',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Lidmaatschap" />,
-        cell: ({ cell }) => <span className="capitalize">{cell.getValue() as string}</span>,
+        cell: ({ cell }) => (
+            <Badge variant="outline" className="capitalize">
+                {cell.getValue() as string}
+            </Badge>
+        ),
+        filterFn: (row, columnId, filterValues) => {
+            if (!filterValues || filterValues.length === 0) return true;
+            return filterValues.includes(row.getValue(columnId));
+        },
         meta: {
             title: 'Lidmaatschap',
         },
@@ -98,14 +110,60 @@ const columns: ColumnDef<Registration>[] = [
                 </Badge>
             );
         },
+        filterFn: (row, columnId, filterValues) => {
+            if (!filterValues || filterValues.length === 0) return true;
+            return filterValues.includes(row.getValue(columnId));
+        },
         meta: {
             title: 'Status',
+        },
+    },
+    {
+        accessorKey: 'created_at',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Verstuurd" />,
+        cell: ({ cell }) => (
+            <>
+                {formatDateTime(cell.getValue() as string, 'd MMMM yyyy')}
+                <span> om </span>
+                {formatDateTime(cell.getValue() as string, 'HH:mm')}
+            </>
+        ),
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue?.from || !filterValue?.to) return true;
+
+            const rowDate = new Date(row.getValue(columnId));
+            const from = startOfDay(new Date(filterValue.from));
+            const to = endOfDay(new Date(filterValue.to));
+
+            return rowDate >= from && rowDate <= to;
+        },
+        meta: {
+            title: 'Verstuurd',
         },
     },
 ];
 
 export default function Registrations() {
     const { registrations } = usePage().props as unknown as { registrations: Registration[] };
+    const { flash } = usePage().props as unknown as { flash: { success: string; error: string; warning: string; info: string } };
+
+    useEffect(() => {
+        if (flash.success) {
+            toast.success(flash.success);
+        }
+
+        if (flash.error) {
+            toast.error(flash.error);
+        }
+
+        if (flash.warning) {
+            toast.warning(flash.warning);
+        }
+
+        if (flash.info) {
+            toast.info(flash.info);
+        }
+    }, [flash]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -119,12 +177,18 @@ export default function Registrations() {
                         rowUrl={(row) => route('registrations.show', row.original.id)}
                         filters={(table) => {
                             return (
-                                <Input
-                                    placeholder="Zoek aanmeldingen..."
-                                    value={table.getState().globalFilter ?? ''}
-                                    onChange={(e) => table.setGlobalFilter(e.target.value)}
-                                    className="h-8 w-full lg:w-[250px]"
-                                />
+                                <>
+                                    <Input
+                                        placeholder="Zoek aanmeldingen..."
+                                        value={table.getState().globalFilter ?? ''}
+                                        onChange={(e) => table.setGlobalFilter(e.target.value)}
+                                        className="h-8 w-full lg:w-[250px]"
+                                    />
+
+                                    <DataTableFacetedFilter column={table.getColumn('membership_type')!} title="Lidmaatschap" />
+
+                                    <DataTableFacetedFilter column={table.getColumn('status')!} title="Status" />
+                                </>
                             );
                         }}
                     />

@@ -24,7 +24,7 @@ class RoleController extends Controller
             ->withCount('users')
             ->get();
 
-        return Inertia::render('settings/roles/overview', [
+        return Inertia::render('settings/roles/roles', [
             'roles' => $roles,
         ]);
     }

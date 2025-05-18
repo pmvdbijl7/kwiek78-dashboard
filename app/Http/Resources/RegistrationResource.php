@@ -22,7 +22,7 @@ class RegistrationResource extends JsonResource
             'has_knvb_affiliation' => $this->has_knvb_affiliation,
             'club_name' => $this->club_name,
             'membership_end' => $this->membership_end,
-            'knvdb_relation_number' => $this->knvdb_relation_number,
+            'knvb_relation_number' => $this->knvb_relation_number,
             'slug' => $this->personData->slug,
             'initials' => $this->personData->initials,
             'firstname' => $this->personData->firstname,

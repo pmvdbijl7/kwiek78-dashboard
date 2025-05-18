@@ -21,8 +21,10 @@ Route::patch('meldingen/{notification:id}/mark-as-unread', [NotificationControll
 Route::patch('meldingen/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->middleware(['auth'])->name('notifications.markAllAsRead');
 Route::patch('meldingen/mark-all-as-unread', [NotificationController::class, 'markAllAsUnread'])->middleware(['auth'])->name('notifications.markAllAsUnread');
 
-Route::get('aanmeldingen', [RegistrationController::class, 'index'])->middleware(['auth'])->name('registrations.index');
-Route::get('aanmeldingen/{registration:id}', [RegistrationController::class, 'show'])->middleware(['auth'])->name('registrations.show');
+Route::get('aanmeldingen', [RegistrationController::class, 'index'])->middleware(['auth', 'permission:view registrations'])->name('registrations.index');
+Route::get('aanmeldingen/{registration:id}', [RegistrationController::class, 'show'])->middleware(['auth', 'permission:view registrations'])->name('registrations.show');
+Route::patch('aanmeldingen/{registration:id}/accept', [RegistrationController::class, 'accept'])->middleware(['auth', 'permission:accept registrations'])->name('registration.accept');
+Route::patch('aanmeldingen/{registration:id}/reject', [RegistrationController::class, 'reject'])->middleware(['auth', 'permission:reject registrations'])->name('registration.reject');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/users.php';

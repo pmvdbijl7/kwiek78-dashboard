@@ -37,10 +37,10 @@ class PersonDataFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'iban' => fake()->iban(),
             'bank_account_holder' => fake()->name(),
-            'volunteer_roles' => json_encode([
+            'volunteer_roles' => [
                 'role1' => fake()->word(),
                 'role2' => fake()->word(),
-            ]),
+            ],
         ];
     }
 }
