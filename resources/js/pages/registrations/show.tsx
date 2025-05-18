@@ -81,6 +81,11 @@ export default function ShowRegistration() {
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-2">
+                                    <p className="font-medium">Geslacht:</p>
+                                    <p className="capitalize">{registration.gender}</p>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-1 sm:grid-cols-2 sm:gap-2">
                                     <p className="font-medium">Geboortedatum:</p>
                                     <p>{formatDateTime(registration.date_of_birth, 'd MMMM yyyy')}</p>
                                 </div>
