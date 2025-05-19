@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('person_data_id')->nullable()->constrained('person_data')->onUpdate('cascade')->onDelete('set null');
             $table->string('token')->unique()->nullable();
             $table->json('roles')->nullable();
-            $table->enum('status', ['in afwachting', 'geaccepteerd', 'geannuleerd', 'verlopen', 'mislukt'])->default('in afwachting');
+            $table->enum('status', ['klaargezet', 'in afwachting', 'geaccepteerd', 'geannuleerd', 'verlopen', 'mislukt'])->default('in afwachting');
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('accepted_at')->nullable();
             $table->timestamps();

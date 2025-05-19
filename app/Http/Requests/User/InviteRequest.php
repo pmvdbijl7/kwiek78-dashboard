@@ -35,7 +35,6 @@ class InviteRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class),
-                Rule::unique(PersonData::class),
             ],
             'roles' => [
                 'required',

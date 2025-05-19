@@ -9,18 +9,18 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class InvitationMail extends Mailable
+class RegistrationAcceptedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $invitation;
+    public $registration;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($invitation)
+    public function __construct($registration)
     {
-        $this->invitation = $invitation;
+        $this->registration = $registration;
     }
 
     /**
@@ -29,7 +29,7 @@ class InvitationMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Je bent uitgenodigd voor het ' . config('app.name') . '! Voltooi je account.',
+            subject: "Welkom bij Kwiek '78! Je aanmelding is geaccepteerd.",
         );
     }
 
@@ -39,10 +39,10 @@ class InvitationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.invitation',
+            view: 'emails.registration_accepted',
             with: [
-                'invitationLink' => url('/wachtwoord-instellen/' . $this->invitation->token),
-                'email' => $this->invitation->personData->email,
+                'firstname' => $this->registration->personData->firstname,
+                'lastname' => $this->registration->personData->lastname,
             ],
         );
     }

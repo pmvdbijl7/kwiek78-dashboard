@@ -104,17 +104,19 @@ const columns: ColumnDef<Invitation>[] = [
             const status = cell.getValue() as string;
 
             const variant =
-                status === 'in afwachting'
-                    ? 'blue'
-                    : status === 'geaccepteerd'
-                      ? 'green'
-                      : status === 'verlopen'
-                        ? 'purple'
-                        : status === 'geannuleerd'
-                          ? 'red'
-                          : status === 'mislukt'
+                status === 'klaargezet'
+                    ? 'outline'
+                    : status === 'in afwachting'
+                      ? 'blue'
+                      : status === 'geaccepteerd'
+                        ? 'green'
+                        : status === 'verlopen'
+                          ? 'purple'
+                          : status === 'geannuleerd'
                             ? 'red'
-                            : 'outline';
+                            : status === 'mislukt'
+                              ? 'red'
+                              : 'outline';
 
             return (
                 <Badge variant={variant} className="capitalize">
@@ -133,13 +135,19 @@ const columns: ColumnDef<Invitation>[] = [
     {
         accessorKey: 'sent_at',
         header: ({ column }) => <DataTableColumnHeader column={column} title="Verstuurd" />,
-        cell: ({ cell }) => (
-            <>
-                {formatDateTime(cell.getValue() as string, 'd MMMM yyyy')}
-                <span> om </span>
-                {formatDateTime(cell.getValue() as string, 'HH:mm')}
-            </>
-        ),
+        cell: ({ cell }) => {
+            const date = cell.getValue() as string;
+
+            return date ? (
+                <>
+                    {formatDateTime(cell.getValue() as string, 'd MMMM yyyy')}
+                    <span> om </span>
+                    {formatDateTime(cell.getValue() as string, 'HH:mm')}
+                </>
+            ) : (
+                '-'
+            );
+        },
         filterFn: (row, columnId, filterValue) => {
             if (!filterValue?.from || !filterValue?.to) return true;
 

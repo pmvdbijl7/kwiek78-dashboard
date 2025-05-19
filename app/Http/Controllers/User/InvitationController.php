@@ -24,12 +24,13 @@ class InvitationController extends Controller
     {
         // Define status sorting
         $statusOrder = "CASE
-            WHEN status = 'in afwachting' THEN 1
-            WHEN status = 'verlopen' THEN 2
-            WHEN status = 'geaccepteerd' THEN 3
-            WHEN status = 'geannuleerd' THEN 4
-            WHEN status = 'mislukt' THEN 5
-            ELSE 6
+            WHEN status = 'klaargezet' THEN 1
+            WHEN status = 'in afwachting' THEN 2
+            WHEN status = 'verlopen' THEN 3
+            WHEN status = 'geaccepteerd' THEN 4
+            WHEN status = 'geannuleerd' THEN 5
+            WHEN status = 'mislukt' THEN 6
+            ELSE 7
         END";
 
         // Retrieve all invitations
@@ -61,21 +62,37 @@ class InvitationController extends Controller
         // Retrieve the roles with IDs and names
         $roles = Role::whereIn('id', $request->roles)->get(['id', 'name']);
 
-        // Create person data
-        $personData = PersonData::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-        ]);
-
-        // Create a new invitation
-        $invitation = Invitation::create([
-            'person_data_id' => $personData->id,
-            'token' => $token,
-            'roles' => $roles,
-            'status' => 'in afwachting',
-            'sent_at' => now(),
-        ]);
+        // Create person data if it doesn't exist
+        $personData = PersonData::firstOrCreate(
+            ['email' => $request->email],
+            [
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+            ]
+        );
+    
+        // Check if an invitation already exists for the person data
+        $existingInvitation = Invitation::where('person_data_id', $personData->id)->first();
+    
+        // If an invitation already exists, update it
+        // Otherwise, create a new invitation
+        if ($existingInvitation) {
+            $existingInvitation->update([
+                'token' => $token,
+                'roles' => $roles,
+                'status' => 'in afwachting',
+                'sent_at' => now(),
+            ]);
+            $invitation = $existingInvitation;
+        } else {
+            $invitation = Invitation::create([
+                'person_data_id' => $personData->id,
+                'token' => $token,
+                'roles' => $roles,
+                'status' => 'in afwachting',
+                'sent_at' => now(),
+            ]);
+        }
 
         // Send invitation email
         Mail::to($personData->email)->send(new InvitationMail($invitation));

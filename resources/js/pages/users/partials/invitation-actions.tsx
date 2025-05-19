@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import InvitationResendDialog from '@/pages/users/partials/invitation-resend-dialog';
 import InvitationRevokeDialog from '@/pages/users/partials/invitation-revoke-dialog';
+import InvitationSendDialog from '@/pages/users/partials/invitation-send-dialog';
 import { Invitation } from '@/types';
 import { Ellipsis } from 'lucide-react';
 import { useState } from 'react';
@@ -11,9 +12,11 @@ type InvitationActionsProps = {
 };
 
 export default function InvitationActions({ invitation }: InvitationActionsProps) {
+    const [sendDialogOpen, setSendDialogOpen] = useState(false);
     const [resendDialogOpen, setResendDialogOpen] = useState(false);
     const [revokeDialogOpen, setRevokeDialogOpen] = useState(false);
 
+    const canSend = invitation.status === 'klaargezet';
     const canResend = invitation.status === 'verlopen' || invitation.status === 'geannuleerd';
     const canRevoke = invitation.status === 'in afwachting';
 
@@ -28,7 +31,9 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
                         </Button>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent align="end" className="w-[160px]">
+                    <DropdownMenuContent align="end">
+                        {canSend && <DropdownMenuItem onClick={() => setSendDialogOpen(true)}>Uitnodiging versturen</DropdownMenuItem>}
+
                         {canResend && <DropdownMenuItem onClick={() => setResendDialogOpen(true)}>Opnieuw versturen</DropdownMenuItem>}
 
                         {canRevoke && (
@@ -39,6 +44,7 @@ export default function InvitationActions({ invitation }: InvitationActionsProps
                     </DropdownMenuContent>
                 </DropdownMenu>
 
+                <InvitationSendDialog invitation={invitation} open={sendDialogOpen} close={() => setSendDialogOpen(false)} />
                 <InvitationResendDialog invitation={invitation} open={resendDialogOpen} close={() => setResendDialogOpen(false)} />
                 <InvitationRevokeDialog invitation={invitation} open={revokeDialogOpen} close={() => setRevokeDialogOpen(false)} />
             </>
