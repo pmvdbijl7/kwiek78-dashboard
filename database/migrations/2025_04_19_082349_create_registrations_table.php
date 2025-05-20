@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('knvb_relation_number')->nullable();
             $table->text('comments')->nullable();
             $table->enum('status', ['in afwachting', 'geaccepteerd', 'afgewezen'])->default('in afwachting');
+            $table->timestamp('reviewed_at')->nullable();
             $table->timestamps();
         });
     }

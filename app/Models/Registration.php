@@ -25,6 +25,7 @@ class Registration extends Model
         'knvb_relation_number',
         'comments',
         'status',
+        'reviewed_at',
     ];
 
     /**

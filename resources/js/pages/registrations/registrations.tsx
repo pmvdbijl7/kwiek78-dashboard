@@ -11,8 +11,6 @@ import { BreadcrumbItem, Registration } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { endOfDay, startOfDay } from 'date-fns';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -145,25 +143,6 @@ const columns: ColumnDef<Registration>[] = [
 
 export default function Registrations() {
     const { registrations } = usePage().props as unknown as { registrations: Registration[] };
-    const { flash } = usePage().props as unknown as { flash: { success: string; error: string; warning: string; info: string } };
-
-    useEffect(() => {
-        if (flash.success) {
-            toast.success(flash.success);
-        }
-
-        if (flash.error) {
-            toast.error(flash.error);
-        }
-
-        if (flash.warning) {
-            toast.warning(flash.warning);
-        }
-
-        if (flash.info) {
-            toast.info(flash.info);
-        }
-    }, [flash]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

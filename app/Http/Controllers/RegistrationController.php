@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\RegistrationResource;
 use App\Mail\RegistrationAcceptedMail;
+use App\Mail\RegistrationRejectedMail;
 use App\Models\Invitation;
 use App\Models\Registration;
+use App\Models\User;
+use App\Notifications\InvitationReadyNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
@@ -46,7 +49,10 @@ class RegistrationController extends Controller
     public function accept(Registration $registration)
     {
         // Update the status
-        $registration->update(['status' => 'geaccepteerd']);
+        $registration->update([
+            'status' => 'geaccepteerd',
+            'reviewed_at' => now(),
+        ]);
 
         // Send acceptance email
         Mail::to($registration->personData->email)->send(new RegistrationAcceptedMail($registration));
@@ -58,26 +64,46 @@ class RegistrationController extends Controller
             'status' => 'klaargezet',
         ]);
 
+        // Retrieve all "Super Admin", "Admin", and "Voorzitter" users
+        $users = User::whereHas('roles', fn ($query) => $query->whereIn('name', ['Super Admin', 'Admin', 'Voorzitter']))->get();
+
+        // Send invitation ready email
+        foreach ($users as $user) {
+            $user->notify(new InvitationReadyNotification($registration));
+        }
+
         // Log the acceptance
         activity()
             ->performedOn($registration)
             ->log('Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' geaccepteerd.');
 
-        return to_route('registrations.index')->with('success', 'Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' geaccepteerd.');
+        return to_route('registrations.index')->with('success', [
+            'message' => 'Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' geaccepteerd.',
+            'description' => 'Er is een e-mail verzonden naar ' . $registration->personData->email . ' met meer informatie. En er is een uitnodiging aangemaakt.',
+        ]);
     }
 
     // Reject a registration
     public function reject(Registration $registration)
     {
         // Update the status
-        $registration->update(['status' => 'afgewezen']);
+        $registration->update([
+            'status' => 'afgewezen',
+            'reviewed_at' => now(),
+        ]);
+
+        // Send rejection email
+        Mail::to($registration->personData->email)->send(new RegistrationRejectedMail($registration));
 
         // Log the rejection
         activity()
             ->performedOn($registration)
             ->log('Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' afgewezen.');
 
-        return to_route('registrations.index')->with('success', 'Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' afgewezen.');
+        return to_route('registrations.index')->with('success', [
+            'message' => 'Aanmelding van ' . $registration->personData->firstname . ' ' . $registration->personData->lastname . ' afgewezen.',
+            'description' => 'Er is een e-mail verzonden naar ' . $registration->personData->email . ' met meer informatie.',
+        ]);
     }
 
     // Helper function to get default roles based on membership type

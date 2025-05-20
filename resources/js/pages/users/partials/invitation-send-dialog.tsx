@@ -29,7 +29,7 @@ export default function InvitationSendDialog({ invitation, open, close }: Invita
     const { roles } = usePage<{ roles: Role[] }>().props;
     const [rolesDropdownOpen, setRolesDropdownOpen] = useState(false);
 
-    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm<Required<InvitationSendForm>>({
+    const { data, setData, post, processing, errors, recentlySuccessful } = useForm<Required<InvitationSendForm>>({
         firstname: invitation.firstname,
         lastname: invitation.lastname,
         email: invitation.email,

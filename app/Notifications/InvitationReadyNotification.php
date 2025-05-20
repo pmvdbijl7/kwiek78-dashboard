@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\DatabaseMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewRegistrationNotification extends Notification
+class InvitationReadyNotification extends Notification
 {
     use Queueable;
 
@@ -44,8 +44,8 @@ class NewRegistrationNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Nieuwe aanmelding ontvangen van ' . $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname)
-            ->view('emails.new_registration', [
+            ->subject('Er staat een nieuwe uitnodiging klaar voor ' . $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname)
+            ->view('emails.invitation_ready', [
                 'registration' => $this->registration,
                 'user' => $notifiable,
             ]);
@@ -57,9 +57,9 @@ class NewRegistrationNotification extends Notification
     public function toDatabase(object $notifiable): DatabaseMessage
     {
         return new DatabaseMessage([
-            'type' => 'Nieuwe aanmelding',
-            'message' => 'Nieuwe aanmelding ontvangen van ' . $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname . '.',
-            'url' => route('registrations.show', $this->registration->id),
+            'type' => 'Uitnodiging klaargezet',
+            'message' => 'Er staat een nieuwe uitnodiging klaar voor ' . $this->registration->personData->firstname . ' ' . $this->registration->personData->lastname . '.',
+            'url' => route('invitations.index'),
         ]);
     }
 

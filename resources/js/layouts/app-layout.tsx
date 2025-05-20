@@ -1,3 +1,4 @@
+import FlashMessage from '@/components/flash-message';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
 import { type BreadcrumbItem } from '@/types';
@@ -13,5 +14,6 @@ export default ({ children, breadcrumbs, ...props }: AppLayoutProps) => (
         {children}
 
         <Toaster richColors />
+        <FlashMessage />
     </AppLayoutTemplate>
 );

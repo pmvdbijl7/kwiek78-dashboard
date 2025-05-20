@@ -70,29 +70,17 @@ class InvitationController extends Controller
                 'lastname' => $request->lastname,
             ]
         );
-    
-        // Check if an invitation already exists for the person data
-        $existingInvitation = Invitation::where('person_data_id', $personData->id)->first();
-    
-        // If an invitation already exists, update it
-        // Otherwise, create a new invitation
-        if ($existingInvitation) {
-            $existingInvitation->update([
+
+        // Update invitation if it already exists
+        $invitation = Invitation::updateOrCreate(
+            ['person_data_id' => $personData->id],
+            [
                 'token' => $token,
                 'roles' => $roles,
                 'status' => 'in afwachting',
                 'sent_at' => now(),
-            ]);
-            $invitation = $existingInvitation;
-        } else {
-            $invitation = Invitation::create([
-                'person_data_id' => $personData->id,
-                'token' => $token,
-                'roles' => $roles,
-                'status' => 'in afwachting',
-                'sent_at' => now(),
-            ]);
-        }
+            ]
+        );
 
         // Send invitation email
         Mail::to($personData->email)->send(new InvitationMail($invitation));
