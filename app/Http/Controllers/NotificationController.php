@@ -35,7 +35,7 @@ class NotificationController extends Controller
         $notification->markAsRead();
 
         // Redirect back to the notifications page
-        return to_route('notifications.index');
+        return to_route('notifications.index')->with('success', 'Melding gemarkeerd als gelezen');
     }
 
     /**
@@ -47,7 +47,7 @@ class NotificationController extends Controller
         $notification->markAsUnread();
 
         // Redirect back to the notifications page
-        return to_route('notifications.index');
+        return to_route('notifications.index')->with('success', 'Melding gemarkeerd als ongelezen');
     }
 
     /**
@@ -59,7 +59,7 @@ class NotificationController extends Controller
         Auth::user()->unreadNotifications->markAsRead();
 
         // Redirect back to the notifications page
-        return to_route('notifications.index');
+        return to_route('notifications.index')->with('success', 'Alle meldingen gemarkeerd als gelezen');
     }
 
     /**
@@ -71,6 +71,6 @@ class NotificationController extends Controller
         Auth::user()->notifications->markAsUnread();
 
         // Redirect back to the notifications page
-        return to_route('notifications.index');
+        return to_route('notifications.index')->with('success', 'Alle meldingen gemarkeerd als ongelezen');
     }
 }

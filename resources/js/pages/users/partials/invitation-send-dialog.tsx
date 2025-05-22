@@ -10,7 +10,6 @@ import { Invitation, Role } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
-import { toast } from 'sonner';
 
 type InvitationSendDialogProps = {
     invitation: Invitation;
@@ -40,9 +39,6 @@ export default function InvitationSendDialog({ invitation, open, close }: Invita
         e.preventDefault();
         post(route('invitations.invite'), {
             onSuccess: () => {
-                toast.success(`${data.firstname} ${data.lastname} is uitgenodigd`, {
-                    description: `Er is een uitnodigingsmail verstuurd naar ${data.email}.`,
-                });
                 close();
             },
         });

@@ -4,7 +4,6 @@ import { User } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import { toast } from 'sonner';
 
 type UserDeleteDialogProps = {
     user: User;
@@ -19,7 +18,6 @@ export default function UserDeleteDialog({ user, open, close }: UserDeleteDialog
         e.preventDefault();
         destroy(route('users.destroy', user.id), {
             onSuccess: () => {
-                toast.success(`${user.firstname} ${user.lastname} is verwijderd`);
                 close();
             },
         });

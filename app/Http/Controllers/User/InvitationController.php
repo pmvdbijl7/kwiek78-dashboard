@@ -38,6 +38,7 @@ class InvitationController extends Controller
             Invitation::with('personData')
                 ->orderByRaw($statusOrder)
                 ->orderBy('sent_at', 'desc')
+                ->orderBy('created_at', 'desc')
                 ->get()
         );
 
@@ -91,7 +92,10 @@ class InvitationController extends Controller
             ->log('Uitnodiging verzonden naar ' . $personData->email);
 
         // Return response
-        return to_route('invitations.index');
+        return to_route('invitations.index')->with('success', [
+            'message' => $personData->firstname . ' ' . $personData->lastname . ' is uitgenodigd',
+            'description' => 'Er is een uitnodigingsmail verzonden naar ' . $personData->email . '.',
+        ]);
     }
 
     /**
@@ -110,7 +114,7 @@ class InvitationController extends Controller
             ->performedOn($invitation)
             ->log('Uitnodiging geannuleerd voor ' . $invitation->personData->email);
 
-        return to_route('invitations.index');
+        return to_route('invitations.index')->with('success', 'De uitnodiging voor ' . $invitation->personData->firstname . ' ' . $invitation->personData->lastname . ' is geannuleerd');
     }
 
     /**
@@ -136,6 +140,9 @@ class InvitationController extends Controller
             ->performedOn($invitation)
             ->log('Uitnodiging opnieuw verzonden naar ' . $invitation->personData->email);
 
-        return to_route('invitations.index');
+        return to_route('invitations.index')->with('success', [
+            'message' => $invitation->personData->firstname . ' ' . $invitation->personData->lastname . ' is opnieuw uitgenodigd',
+            'description' => 'Er is een uitnodigingsmail verstuurd naar ' . $invitation->personData->email . '.',
+        ]);
     }
 }

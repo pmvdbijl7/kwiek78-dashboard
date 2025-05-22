@@ -6,7 +6,6 @@ import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
-import { toast } from 'sonner';
 
 type CreateForm = {
     name: string;
@@ -24,7 +23,6 @@ export default function CreateDialog() {
         post(route('roles.store'), {
             onSuccess: () => {
                 setOpen(false);
-                toast.success(`De ${data.name} rol is aangemaakt`);
                 reset();
             },
         });

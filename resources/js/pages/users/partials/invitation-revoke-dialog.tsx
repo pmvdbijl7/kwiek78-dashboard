@@ -4,7 +4,6 @@ import { Invitation } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import { toast } from 'sonner';
 
 type InvitationRevokeDialogProps = {
     invitation: Invitation;
@@ -19,7 +18,6 @@ export default function InvitationRevokeDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.revoke', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`De uitnodiging voor ${invitation.firstname} ${invitation.lastname} is geannuleerd`);
                 close();
             },
         });

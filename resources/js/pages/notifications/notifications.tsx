@@ -12,7 +12,6 @@ import { Head, useForm, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { endOfDay, startOfDay } from 'date-fns';
 import { DateRange } from 'react-day-picker';
-import { toast } from 'sonner';
 import NotificationActions from './partials/notification-actions';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -114,11 +113,7 @@ export default function Notifications() {
     const { patch, processing } = useForm();
 
     const markAllAsRead = () => {
-        patch(route('notifications.markAllAsRead'), {
-            onSuccess: () => {
-                toast.success('Alle meldingen gemarkeerd als gelezen');
-            },
-        });
+        patch(route('notifications.markAllAsRead'));
     };
 
     return (

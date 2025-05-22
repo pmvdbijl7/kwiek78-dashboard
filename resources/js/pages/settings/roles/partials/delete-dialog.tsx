@@ -22,7 +22,6 @@ export default function DeleteDialog({ role, open, close }: DeleteDialogProps) {
                 toast.error(errors.error);
             },
             onSuccess: () => {
-                toast.success(`De rol ${role.name} is verwijderd`);
                 close();
             },
         });

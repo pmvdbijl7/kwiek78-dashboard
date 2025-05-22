@@ -6,7 +6,6 @@ import { Role } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import { toast } from 'sonner';
 
 interface GeneralSettingsForm {
     name: string;
@@ -22,11 +21,7 @@ export default function GeneralSettings() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('roles.update', role.id), {
-            onSuccess: () => {
-                toast.success(`De ${data.name} rol is bijgewerkt`);
-            },
-        });
+        patch(route('roles.update', role.id));
     };
 
     return (

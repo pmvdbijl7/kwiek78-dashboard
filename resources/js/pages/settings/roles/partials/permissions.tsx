@@ -4,7 +4,6 @@ import { Permission, Role } from '@/types';
 import { useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
-import { toast } from 'sonner';
 
 type PermissionsForm = {
     permissions: number[];
@@ -36,9 +35,6 @@ export default function Permissions() {
 
         patch(route('roles.permissions.update', role.id), {
             preserveScroll: true,
-            onSuccess: () => {
-                toast.success(`De rechten voor de ${role.name} rol zijn bijgewerkt`);
-            },
         });
     };
 

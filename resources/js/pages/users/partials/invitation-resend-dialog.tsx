@@ -4,7 +4,6 @@ import { Invitation } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
-import { toast } from 'sonner';
 
 type InvitationResendDialogProps = {
     invitation: Invitation;
@@ -19,9 +18,6 @@ export default function InvitationResendDialog({ invitation, open, close }: Invi
         e.preventDefault();
         patch(route('invitation.resend', { id: invitation.id }), {
             onSuccess: () => {
-                toast.success(`${invitation.firstname} ${invitation.lastname} is opnieuw uitgenodigd`, {
-                    description: `Er is een uitnodigingsmail verstuurd naar ${invitation.email}.`,
-                });
                 close();
             },
         });

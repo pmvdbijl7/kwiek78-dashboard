@@ -4,7 +4,6 @@ import { Notification } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { Ellipsis } from 'lucide-react';
 import { FormEventHandler, useState } from 'react';
-import { toast } from 'sonner';
 
 type NotificationActionsProps = {
     notification: Notification;
@@ -18,7 +17,6 @@ export default function NotificationActions({ notification }: NotificationAction
         e.preventDefault();
         patch(route('notification.markAsRead', { id: notification.id }), {
             onSuccess: () => {
-                toast.success('Melding gemarkeerd als gelezen');
                 setIsDropdownMenuOpen(false);
             },
         });
@@ -28,7 +26,6 @@ export default function NotificationActions({ notification }: NotificationAction
         e.preventDefault();
         patch(route('notification.markAsUnread', { id: notification.id }), {
             onSuccess: () => {
-                toast.success('Melding gemarkeerd als ongelezen');
                 setIsDropdownMenuOpen(false);
             },
         });

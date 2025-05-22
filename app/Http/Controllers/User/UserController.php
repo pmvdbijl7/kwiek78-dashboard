@@ -99,7 +99,7 @@ class UserController extends Controller
         // Sync the roles
         $user->syncRoles($request->roles);
 
-        return to_route('users.edit', $user->slug);
+        return to_route('users.edit', $user->slug)->with('success', 'De gegevens van ' . $user->personData->firstname . ' ' . $user->personData->lastname . ' zijn bijgewerkt');
     }
 
     /**
@@ -111,6 +111,6 @@ class UserController extends Controller
         $user->delete();
 
         // Redirect to the users overview page
-        return to_route('users.index');
+        return to_route('users.index')->with('success', $user->personData->firstname . ' ' . $user->personData->lastname . ' is verwijderd');
     }
 }

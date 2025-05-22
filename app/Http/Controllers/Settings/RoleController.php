@@ -39,7 +39,7 @@ class RoleController extends Controller
             'name' => $request->name,
         ]);
 
-        return to_route('roles.edit', $role->slug);
+        return to_route('roles.edit', $role->slug)->with('success', 'De ' . $role->name . ' rol is aangemaakt');
     }
 
     /**
@@ -73,7 +73,7 @@ class RoleController extends Controller
         // Update the role
         $role->update($request->only('name'));
 
-        return to_route('roles.edit', $role->slug);
+        return to_route('roles.edit', $role->slug)->with('success', 'De ' . $role->name . ' rol is bijgewerkt');
     }
 
     /**
@@ -89,7 +89,7 @@ class RoleController extends Controller
         // Sync the permissions
         $role->syncPermissions($request->permissions);
 
-        return to_route('roles.edit', $role->slug);
+        return to_route('roles.edit', $role->slug)->with('success', 'De rechten voor de ' . $role->name . ' rol zijn bijgewerkt');
     }
 
     /**
@@ -99,12 +99,12 @@ class RoleController extends Controller
     {
         // Check if the role is deletable
         if (!$role->deletable) {
-            return back()->withErrors(['error' => 'This role cannot be deleted']);
+            return back()->withErrors(['error' => 'Deze rol kan niet worden verwijderd']);
         }
 
         // Delete the role
         $role->delete();
 
-        return to_route('roles.index');
+        return to_route('roles.index')->with('success', 'De rol ' . $role->name . ' is verwijderd');
     }
 }

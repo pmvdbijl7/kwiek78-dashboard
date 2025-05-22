@@ -11,7 +11,6 @@ import { BreadcrumbItem, Role, User } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler, useMemo, useState } from 'react';
-import { toast } from 'sonner';
 
 type UserEditForm = {
     firstname: string;
@@ -48,11 +47,7 @@ export default function EditUser() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        patch(route('users.update', user.id), {
-            onSuccess: () => {
-                toast.success(`De gegevens van ${data.firstname} ${data.lastname} zijn bijgewerkt`);
-            },
-        });
+        patch(route('users.update', user.id));
     };
 
     return (
