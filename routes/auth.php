@@ -23,6 +23,9 @@ Route::middleware('guest')->group(function () {
 
     Route::post('inloggen', [AuthenticatedSessionController::class, 'store']);
 
+    Route::get('tweestapsverificatie', [AuthenticatedSessionController::class, 'twoFactorChallenge'])
+        ->name('two-factor.login')->middleware('two-factor.pending');
+
     Route::get('wachtwoord-vergeten', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 

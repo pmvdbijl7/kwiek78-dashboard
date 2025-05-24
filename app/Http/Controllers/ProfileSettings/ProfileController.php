@@ -67,4 +67,11 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+
+    public function twoFactor(Request $request): Response
+    {
+        return Inertia::render('profile-settings/two-factor', [
+            'status' => session('status'),
+        ]);
+    }
 }

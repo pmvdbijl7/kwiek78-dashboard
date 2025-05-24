@@ -16,4 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::get('instellingen/thema', function () {
         return Inertia::render('profile-settings/appearance');
     })->name('appearance');
+
+    Route::get('instellingen/tweestapsverificatie', [ProfileController::class, 'twoFactor'])->name('profile.two-factor');
 });

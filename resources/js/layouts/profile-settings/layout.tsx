@@ -22,6 +22,11 @@ const sidebarNavItems: NavItem[] = [
         url: '/instellingen/thema',
         icon: null,
     },
+    {
+        title: 'Tweestapsverificatie',
+        url: '/instellingen/tweestapsverificatie',
+        icon: null,
+    },
 ];
 
 export default function ProfileSettingsLayout({ children }: PropsWithChildren) {

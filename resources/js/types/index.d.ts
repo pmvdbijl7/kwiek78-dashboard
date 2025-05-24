@@ -68,6 +68,9 @@ export interface User {
     bank_account_holder?: string;
     volunteer_roles?: [];
     roles: Role[];
+    two_factor_secret?: string;
+    two_factor_recovery_codes?: string;
+    two_factor_confirmed_at?: string;
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
