@@ -41,7 +41,7 @@ class RoleSeeder extends Seeder
 
         // Create roles
         foreach ($roles as $role) {
-            Role::firstOrCreate(['name' => $role]);
+            Role::firstOrCreate(['name' => $role, 'deletable' => false]);
         }
     }
 }
