@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -43,7 +43,7 @@ class PermissionSeeder extends Seeder
         }
 
         // Assign permissions to the admin role
-        $adminRole = Role::firstOrCreate(['name' => 'Super Admin', 'slug' => 'super-admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'Super Admin', 'deletable' => false]);
         $adminRole->syncPermissions(array_keys($permissions));
     }
 }

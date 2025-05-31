@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\PersonData;
+use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create Super Admin role
-        $adminRole = Role::firstOrCreate(['slug' => 'super-admin', 'name' => 'Super Admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'Super Admin', 'deletable' => false]);
 
         // Create person data
         $personData = PersonData::firstOrCreate([
